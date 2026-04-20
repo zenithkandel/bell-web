@@ -758,10 +758,19 @@
           id="audioPlayTrackName"
           style="margin-bottom: 16px; font-weight: 500; text-align: center"
         ></p>
-        
-        <div class="form-group" style="margin-bottom: 16px;">
-            <label class="form-label" id="txt-lblTestDuration">Play Duration (Seconds)</label>
-            <input type="number" id="inp-test-duration" class="form-control" placeholder="0 = Full Audio" min="0" value="" />
+
+        <div class="form-group" style="margin-bottom: 16px">
+          <label class="form-label" id="txt-lblTestDuration"
+            >Play Duration (Seconds)</label
+          >
+          <input
+            type="number"
+            id="inp-test-duration"
+            class="form-control"
+            placeholder="0 = Full Audio"
+            min="0"
+            value=""
+          />
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 12px">
@@ -1322,8 +1331,11 @@
 
       /* Modal & Form Logic */
       const modalOverlay = document.getElementById("modalOverlay");
+      let editingTimeChipIdx = -1;
 
       function openModal(editId = null) {
+        editingTimeChipIdx = -1;
+        document.getElementById("btn-add-time").innerText = dict[lang].add;
         document.getElementById("txt-modalTitle").innerText = editId
           ? dict[lang].modalTitleEdit
           : dict[lang].modalTitleAdd;
@@ -1358,12 +1370,28 @@
         const t = document.getElementById("inp-time").value;
         const d = parseInt(document.getElementById("inp-duration").value) || 0;
         if (!t) return;
-        timeChips.push({ time: t, duration: d });
+        
+        if (editingTimeChipIdx >= 0) {
+          timeChips[editingTimeChipIdx] = { time: t, duration: d };
+          editingTimeChipIdx = -1;
+          document.getElementById("btn-add-time").innerText = dict[lang].add;
+        } else {
+          timeChips.push({ time: t, duration: d });
+        }
+        
         renderTimeChips();
+        document.getElementById("inp-time").value = "";
+        document.getElementById("inp-duration").value = "";
       }
 
       function removeTimeChip(idx) {
         timeChips.splice(idx, 1);
+        if (editingTimeChipIdx === idx) {
+            editingTimeChipIdx = -1;
+            document.getElementById("btn-add-time").innerText = dict[lang].add;
+        } else if (editingTimeChipIdx > idx) {
+            editingTimeChipIdx--;
+        }
         renderTimeChips();
       }
 
@@ -1371,8 +1399,8 @@
         document.getElementById("inp-time").value = timeChips[idx].time;
         document.getElementById("inp-duration").value =
           timeChips[idx].duration || "";
-        timeChips.splice(idx, 1);
-        renderTimeChips();
+        editingTimeChipIdx = idx;
+        document.getElementById("btn-add-time").innerText = dict[lang].update || "Update";
       }
 
       function renderTimeChips() {
@@ -1565,6 +1593,21 @@
       }
 
       // Init App run
+      // Set initial lang btn and theme
+      els.langBtn.innerText = lang === "en" ? "नेप" : "EN";
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("path-theme").setAttribute("d", theme === "dark" ? icons.sun : icons.moon);
+      
+      // Global Esc key listener for Modals
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.getElementById("modalOverlay").classList.remove("active");
+          document.getElementById("alertModal").classList.remove("active");
+          document.getElementById("confirmModal").classList.remove("active");
+          document.getElementById("audioPlayModal").classList.remove("active");
+        }
+      });
+
       updateUIStrings();
       renderDayPicker();
       fetchAudio();
