@@ -1,0 +1,235 @@
+this is the main project idea just read this first portion to understand about what the project is and then in the second portion i will tell you what i want u to do
+```
+========================================================
+AUTOMATIC SCHOOL / COLLEGE BELL SYSTEM
+MASTER DESIGN & PROPOSAL DOCUMENT
+========================================================
+
+1. PROJECT OVERVIEW
+--------------------------------------------------------
+This project is a fully automated, production-level school/college bell system designed to eliminate manual bell operation and provide precise, reliable, and intelligent bell scheduling with audio announcements.
+
+The system operates completely offline, ensuring high reliability even in environments without internet connectivity. It integrates accurate timekeeping, flexible scheduling, emergency alert capabilities, and a user-friendly configuration interface.
+
+--------------------------------------------------------
+
+2. OBJECTIVES
+--------------------------------------------------------
+- Automate bell ringing without human intervention
+- Ensure high accuracy timing using RTC
+- Provide flexible scheduling (weekly, seasonal, special days)
+- Deliver clear audio announcements through existing PA systems
+- Enable offline configuration using a mobile interface
+- Ensure long-term reliability and minimal maintenance
+
+--------------------------------------------------------
+
+3. CORE FEATURES
+--------------------------------------------------------
+
+SYSTEM FEATURES:
+- Fully Offline Operation (No Internet Required)
+- 7-Day Programmable Schedule
+- Winter / Summer Preset Timetable Switching
+- Special Day / Event Schedule Presets
+- Priority-Based Schedule Resolution:
+  Emergency > Special Day > Seasonal > Weekly
+
+TIME MANAGEMENT:
+- High Accuracy RTC (DS3231)
+- Automatic Time Sync via Mobile (Offline Hotspot)
+- RTC Battery Backup (Up to 5 Years)
+- RTC Invalid Time Detection
+
+AUDIO SYSTEM:
+- MicroSD Card Based Audio Storage
+- MP3 / WAV Audio File Support
+- Preloaded Bell & Announcement Sounds
+- External PA Amplifier Compatibility
+- Clean Line-Level Output via DAC
+- Audio Fallback System (Default Beep)
+
+USER INTERFACE:
+- 16x2 LCD Display
+- Time & Next Bell Display
+- System Status Display (RUN / CONFIG / EMERGENCY)
+- LED Indicators (Power / Status / Emergency)
+
+CONTROL SYSTEM:
+- Manual Next Bell Trigger Button
+- Emergency Siren Button (Long Press Protection)
+- Config Mode Button (Hotspot Activation)
+- System Enable / Disable Switch
+- Button Safety Logic (Debounce + Hold Detection)
+
+CONFIGURATION SYSTEM:
+- Offline WiFi Hotspot Mode
+- Mobile-Friendly Web Dashboard
+- Schedule Editing & Saving
+- Time Synchronization
+
+RELIABILITY FEATURES:
+- Auto Resume After Power Failure
+- Missed Bell Handling Logic
+- SD Card Health Check
+- SD Card Removal Detection
+- Audio File Missing Handling
+- Watchdog Timer for Auto Recovery
+
+UPDATE SYSTEM:
+- OTA Firmware Update
+- Safe Rollback Mechanism (Dual Partition)
+
+POWER & SAFETY:
+- Industrial AC-DC Power Module
+- Fully Isolated Power Design
+- Fuse Protection
+- MOV Surge Protection
+
+--------------------------------------------------------
+
+4. CORE ARCHITECTURE
+--------------------------------------------------------
+
+SYSTEM ARCHITECTURE FLOW:
+
+AC INPUT (230V)
+   ↓
+AC-DC SMPS (HLK-PM5)
+   ↓
+Power Distribution (5V / 3.3V)
+   ↓
+ESP32-S3 MAIN CONTROLLER
+   ├── RTC MODULE (DS3231)
+   ├── SD CARD MODULE
+   ├── LCD DISPLAY (16x2 I2C)
+   ├── CONTROL BUTTONS
+   ├── STATUS LEDs
+   └── AUDIO DAC (PCM5102A)
+            ↓
+        3.5mm AUDIO OUTPUT
+            ↓
+     EXTERNAL AMPLIFIER
+            ↓
+          SPEAKERS
+
+--------------------------------------------------------
+
+5. SOFTWARE ARCHITECTURE
+--------------------------------------------------------
+
+TASK-BASED SYSTEM DESIGN (RTOS):
+
+Core 1 (Real-Time Tasks):
+- RTC Monitoring
+- Bell Trigger Scheduling
+- Emergency Handling
+
+Core 2 (User Interface Tasks):
+- Web Server (Hotspot Mode)
+- LCD Updates
+- Button Handling
+- File System Access
+
+SYSTEM LOOP:
+- Read current time from RTC
+- Compare with schedule
+- Trigger audio when matched
+- Update display
+- Monitor buttons and events
+
+--------------------------------------------------------
+
+6. OPERATION WORKFLOW
+--------------------------------------------------------
+
+1. Power ON
+2. System Initialization
+3. Load Configuration from SD Card
+4. Read RTC Time
+5. Display System Status
+6. Enter Monitoring Loop:
+   - Check Time
+   - Check Schedule
+   - Trigger Bell
+   - Monitor Inputs
+7. Handle Emergency Interrupts
+8. Continue Continuous Operation
+
+--------------------------------------------------------
+
+7. FAIL-SAFE DESIGN
+--------------------------------------------------------
+
+- RTC Failure → Display warning
+- SD Card Missing → Retry + fallback audio
+- Audio File Missing → Skip or fallback beep
+- Power Failure → Auto restart and resume
+- OTA Failure → Rollback firmware
+- Button Misuse → Long press protection
+
+--------------------------------------------------------
+
+8. PERFORMANCE SPECIFICATIONS
+--------------------------------------------------------
+
+- Timing Accuracy: ±1 second
+- RTC Drift: < 1 minute/year
+- Startup Time: < 5 seconds
+- Continuous Operation: 24/7
+- Audio Latency: < 200 ms
+
+--------------------------------------------------------
+
+9. EXPECTED LIFETIME
+--------------------------------------------------------
+
+- ESP32-S3: 5–10 years
+- RTC Module: 10+ years
+- CR2032 Battery: 3–5 years
+- SD Card: 2–5 years (replaceable)
+
+--------------------------------------------------------
+
+10. APPLICATIONS
+--------------------------------------------------------
+
+- Schools
+- Colleges
+- Coaching Centers
+- Factories
+- Offices
+- Public Announcement Systems
+
+--------------------------------------------------------
+
+11. ADVANTAGES
+--------------------------------------------------------
+
+- Fully automatic system
+- No human intervention required
+- Highly accurate timing
+- Easy configuration
+- Low maintenance
+- Scalable and upgradeable
+- Cost-effective solution
+
+--------------------------------------------------------
+
+12. CONCLUSION
+--------------------------------------------------------
+
+This system provides a complete, production-ready solution for automated bell and announcement management. By combining accurate timekeeping, flexible scheduling, and robust hardware design, it ensures reliable and long-term operation suitable for real-world deployment.
+
+The system is designed with fault tolerance, user convenience, and industrial reliability in mind, making it suitable for institutional and commercial applications.
+
+========================================================
+END OF DOCUMENT
+========================================================
+```
+
+
+
+
+
+soo now talking about what i want, i am doing the website portion of the project. i need the website to be very easy to use, both light mode dark mode, both english and nepali language support, small file, simple easy to navigate design and packed with features as per the concept mentioned earlier. i want you to make a html css js all in one file and for the backend, currently make a single file php backend which will be later replaced by backend in C. basically in backend just define API endpoints and then define what each API does and in frontend make evrything very easy to use so that any old person can do it.
