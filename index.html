@@ -1113,7 +1113,9 @@
           const s = schedules.find((x) => x.id === editId);
           setScheduleType(s.type);
           document.getElementById("inp-title").value = s.title || "";
-          timeChips = s.times ? JSON.parse(JSON.stringify(s.times)) : [{time: s.time, duration: 0}];
+          timeChips = s.times
+            ? JSON.parse(JSON.stringify(s.times))
+            : [{ time: s.time, duration: 0 }];
           document.getElementById("inp-audio").value = s.audio;
           if (s.type === "weekly") selectedDays = [...s.days];
           if (s.type === "special")
@@ -1147,13 +1149,17 @@
 
       function renderTimeChips() {
         const container = document.getElementById("time-chips-container");
-        container.innerHTML = timeChips.map((chip, idx) => `
+        container.innerHTML = timeChips
+          .map(
+            (chip, idx) => `
             <div style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
                 <span style="font-weight: 500;">${chip.time}</span>
-                <span style="color: var(--text-muted); font-size: 11px;">(${chip.duration > 0 ? chip.duration + 's' : 'Full'})</span>
+                <span style="color: var(--text-muted); font-size: 11px;">(${chip.duration > 0 ? chip.duration + "s" : "Full"})</span>
                 <svg onclick="removeTimeChip(${idx})" class="icon" style="width: 14px; height: 14px; cursor: pointer; color: var(--danger);" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </div>
-        `).join("");
+        `,
+          )
+          .join("");
       }
 
       function closeModal() {
@@ -1210,11 +1216,17 @@
             alert("Please select at least one active day.");
             return;
           }
+          if (timeChips.length === 0) {
+            alert("Please add at least one execution time.");
+            return;
+          }
           const idVal = document.getElementById("edit-id").value;
           const newSchedule = {
             id: idVal ? parseInt(idVal) : Date.now(),
+            title: document.getElementById("inp-title").value,
             type: scheduleType,
-            time: document.getElementById("inp-time").value,
+            time: timeChips[0].time, // Legacy fallback
+            times: [...timeChips],
             audio: document.getElementById("inp-audio").value,
           };
           if (scheduleType === "weekly") newSchedule.days = [...selectedDays];
@@ -1227,8 +1239,12 @@
             schedules.push(newSchedule);
           }
 
-          // Re-order sorting by time
-          schedules.sort((a, b) => a.time.localeCompare(b.time));
+          // Re-order sorting by first time
+          schedules.sort((a, b) => {
+            const tA = a.times && a.times.length ? a.times[0].time : a.time;
+            const tB = b.times && b.times.length ? b.times[0].time : b.time;
+            return tA.localeCompare(tB);
+          });
 
           // Mock API saving
           try {
@@ -1270,9 +1286,24 @@
               s.type === "weekly"
                 ? formatDays(s.days)
                 : `<span style="color:var(--primary); font-weight:600">${dict[lang].specialPrefix}${s.date}</span>`;
+
+            // Format chip times
+            const displayTimes =
+              s.times && s.times.length > 0
+                ? s.times
+                    .map(
+                      (t) =>
+                        `<div style="background:var(--bg-color); border:1px solid var(--border-color); padding: 2px 6px; border-radius:12px; font-size:12px; display:inline-block; margin:2px;">${t.time} <span style="color:var(--text-muted); font-size:10px;">(${t.duration ? t.duration + "s" : "Full"})</span></div>`,
+                    )
+                    .join("")
+                : `<div style="background:var(--bg-color); border:1px solid var(--border-color); padding: 2px 6px; border-radius:12px; font-size:12px; display:inline-block; margin:2px;">${s.time}</div>`;
+
             return `
                 <tr>
-                    <td class="time-col">${s.time}</td>
+                    <td>
+                        <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${s.title || "Untitled"}</div>
+                        <div style="display:flex; flex-wrap:wrap; max-width: 250px;">${displayTimes}</div>
+                    </td>
                     <td>${scheduleString}</td>
                     <td><span style="background:var(--bg-color); padding: 4px 8px; border-radius:4px; font-size:13px; border:1px solid var(--border-color);">${s.audio}</span></td>
                     <td style="text-align: right;">
