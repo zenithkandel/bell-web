@@ -685,9 +685,19 @@
         <form id="schedule-form">
           <input type="hidden" id="edit-id" />
 
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" id="txt-lblTitle">Schedule Title</label>
+            <input type="text" class="form-control" id="inp-title" placeholder="e.g. Morning Assembly" required />
+          </div>
+
           <div class="form-group">
-            <label class="form-label" id="txt-lblTime">Execution Time</label>
-            <input type="time" class="form-control" id="inp-time" required />
+            <label class="form-label" id="txt-lblTime">Execution Time & Duration</label>
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                <input type="time" class="form-control" id="inp-time" style="flex: 1;" />
+                <input type="number" class="form-control" id="inp-duration" placeholder="Secs (0=Full)" min="0" style="flex: 1;" />
+                <button type="button" class="btn btn-outline" style="padding: 0 12px; color: var(--primary); border-color: var(--primary);" id="btn-add-time" onclick="addTimeChip()">Add</button>
+            </div>
+            <div id="time-chips-container" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
           </div>
 
           <div class="form-group" id="group-days">
