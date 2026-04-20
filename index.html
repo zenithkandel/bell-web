@@ -1,229 +1,383 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bell System Configuration</title>
     <style>
-        :root {
-            --bg: #ffffff;
-            --text: #1a1a1a;
-            --primary: #0056b3;
-            --border: #cccccc;
-            --card-bg: #f8f9fa;
-            --danger: #dc3545;
-            --success: #28a745;
-            --font-main: system-ui, -apple-system, sans-serif;
+      :root {
+        --bg: #ffffff;
+        --text: #1a1a1a;
+        --primary: #0056b3;
+        --border: #cccccc;
+        --card-bg: #f8f9fa;
+        --danger: #dc3545;
+        --success: #28a745;
+        --font-main: system-ui, -apple-system, sans-serif;
+      }
+      [data-theme="dark"] {
+        --bg: #121212;
+        --text: #e0e0e0;
+        --primary: #4da3ff;
+        --border: #444444;
+        --card-bg: #1e1e1e;
+      }
+      body {
+        font-family: var(--font-main);
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+        font-size: 18px; /* Large typography */
+        transition: all 0.2s;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      .controls button {
+        font-size: 16px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+        border: 2px solid var(--border);
+        background: var(--card-bg);
+        color: var(--text);
+        border-radius: 8px;
+        font-weight: bold;
+      }
+      .controls button:hover {
+        border-color: var(--primary);
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1,
+      h2,
+      h3 {
+        color: var(--primary);
+        margin-top: 0;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9em;
+        background: var(--success);
+        color: white;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 600px) {
+        .grid {
+          grid-template-columns: 1fr;
         }
-        [data-theme="dark"] {
-            --bg: #121212;
-            --text: #e0e0e0;
-            --primary: #4da3ff;
-            --border: #444444;
-            --card-bg: #1e1e1e;
-        }
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            font-size: 18px; /* Large typography */
-            transition: all 0.2s;
-        }
-        .container { max-width: 800px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
-        .controls button { font-size: 16px; padding: 10px 15px; margin-left: 10px; cursor: pointer; border: 2px solid var(--border); background: var(--card-bg); color: var(--text); border-radius: 8px; font-weight: bold; }
-        .controls button:hover { border-color: var(--primary); }
-        .card { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1, h2, h3 { color: var(--primary); margin-top: 0; }
-        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9em; background: var(--success); color: white; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media(max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-        input, select, button { font-size: 18px; padding: 12px; max-width: 100%; box-sizing: border-box; }
-        .btn-primary { background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
-        .btn-primary:hover { opacity: 0.9; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
-        .icon { width: 24px; height: 24px; fill: currentColor; }
+      }
+      input,
+      select,
+      button {
+        font-size: 18px;
+        padding: 12px;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      .icon {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1 id="t-title">Bell System</h1>
-            <div class="controls">
-                <button onclick="toggleLang()" id="lang-btn">NEP</button>
-                <button onclick="toggleTheme()" id="theme-btn">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21a9 9 0 0 1-6.36-15.36A9 9 0 0 0 21 12a9 9 0 0 1-9 9z"/></svg>
-                </button>
-            </div>
-        </header>
+      <header>
+        <h1 id="t-title">Bell System</h1>
+        <div class="controls">
+          <button onclick="toggleLang()" id="lang-btn">NEP</button>
+          <button onclick="toggleTheme()" id="theme-btn">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 21a9 9 0 0 1-6.36-15.36A9 9 0 0 0 21 12a9 9 0 0 1-9 9z"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
 
-        <div class="grid">
-            <div class="card">
-                <h2 id="t-statusHeading">System Status</h2>
-                <p><span id="t-stateLabel">State:</span> <span id="sys-state" class="status-badge">RUNNING</span></p>
-                <p><span id="t-timeLabel">Device Time:</span> <strong id="sys-time">--:--:--</strong></p>
-                <button class="btn-primary" onclick="syncTime()" style="margin-top: 15px;">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-                    <span id="t-syncBtn">Sync Time</span>
-                </button>
-            </div>
-            
-            <div class="card">
-                <h2 id="t-audioTest">Audio Test</h2>
-                <select id="audio-select" style="width: 100%; margin-bottom: 15px;">
-                    <option value="">Loading...</option>
-                </select>
-                <button class="btn-primary" onclick="testAudio()">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    <span id="t-playBtn">Play Selected Audio</span>
-                </button>
-            </div>
+      <div class="grid">
+        <div class="card">
+          <h2 id="t-statusHeading">System Status</h2>
+          <p>
+            <span id="t-stateLabel">State:</span>
+            <span id="sys-state" class="status-badge">RUNNING</span>
+          </p>
+          <p>
+            <span id="t-timeLabel">Device Time:</span>
+            <strong id="sys-time">--:--:--</strong>
+          </p>
+          <button
+            class="btn-primary"
+            onclick="syncTime()"
+            style="margin-top: 15px"
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+              />
+            </svg>
+            <span id="t-syncBtn">Sync Time</span>
+          </button>
         </div>
 
         <div class="card">
-            <h2 id="t-scheduleHeading">Schedule Editor</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th id="t-thTime">Time</th>
-                        <th id="t-thDays">Days</th>
-                        <th id="t-thAudio">Audio</th>
-                        <th id="t-thAction">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="schedule-body">
-                    <!-- Schedule rows inserted via JS -->
-                </tbody>
-            </table>
-            <form id="add-schedule-form" style="display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;">
-                <input type="time" id="new-time" required style="flex:1;">
-                <select id="new-days" required style="flex:2;">
-                    <option value="MON-FRI" id="t-optMonFri">Mon-Fri</option>
-                    <option value="ALL" id="t-optAll">Everyday</option>
-                </select>
-                <button type="submit" class="btn-primary" style="flex:1;" id="t-addBtn">Add</button>
-            </form>
+          <h2 id="t-audioTest">Audio Test</h2>
+          <select id="audio-select" style="width: 100%; margin-bottom: 15px">
+            <option value="">Loading...</option>
+          </select>
+          <button class="btn-primary" onclick="testAudio()">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <span id="t-playBtn">Play Selected Audio</span>
+          </button>
         </div>
+      </div>
+
+      <div class="card">
+        <h2 id="t-scheduleHeading">Schedule Editor</h2>
+        <table>
+          <thead>
+            <tr>
+              <th id="t-thTime">Time</th>
+              <th id="t-thDays">Days</th>
+              <th id="t-thAudio">Audio</th>
+              <th id="t-thAction">Action</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-body">
+            <!-- Schedule rows inserted via JS -->
+          </tbody>
+        </table>
+        <form
+          id="add-schedule-form"
+          style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap"
+        >
+          <input type="time" id="new-time" required style="flex: 1" />
+          <select id="new-days" required style="flex: 2">
+            <option value="MON-FRI" id="t-optMonFri">Mon-Fri</option>
+            <option value="ALL" id="t-optAll">Everyday</option>
+          </select>
+          <button
+            type="submit"
+            class="btn-primary"
+            style="flex: 1"
+            id="t-addBtn"
+          >
+            Add
+          </button>
+        </form>
+      </div>
     </div>
 
     <script>
-        const dict = {
-            en: {
-                title: "Bell System", statusHeading: "System Status", stateLabel: "State:",
-                timeLabel: "Device Time:", syncBtn: "Sync with Phone", audioTest: "Audio Test",
-                playBtn: "Play Selected Audio", scheduleHeading: "Schedule Editor",
-                thTime: "Time", thDays: "Days", thAudio: "Audio", thAction: "Action",
-                optMonFri: "Mon-Fri", optAll: "Everyday", addBtn: "Add Bell", deleteBtn: "Delete"
-            },
-            ne: {
-                title: "घण्टी प्रणाली", statusHeading: "प्रणालीको अवस्था", stateLabel: "अवस्था:",
-                timeLabel: "उपकरणको समय:", syncBtn: "समय मिलाउनुहोस्", audioTest: "आवाज परीक्षण",
-                playBtn: "आवाज बजाउनुहोस्", scheduleHeading: "समय तालिका सम्पादन",
-                thTime: "समय", thDays: "दिनहरू", thAudio: "आवाज", thAction: "कार्य",
-                optMonFri: "सोम-शुक्र", optAll: "हरेक दिन", addBtn: "थप्नुहोस्", deleteBtn: "हटाउनुहोस्"
-            }
-        };
+      const dict = {
+        en: {
+          title: "Bell System",
+          statusHeading: "System Status",
+          stateLabel: "State:",
+          timeLabel: "Device Time:",
+          syncBtn: "Sync with Phone",
+          audioTest: "Audio Test",
+          playBtn: "Play Selected Audio",
+          scheduleHeading: "Schedule Editor",
+          thTime: "Time",
+          thDays: "Days",
+          thAudio: "Audio",
+          thAction: "Action",
+          optMonFri: "Mon-Fri",
+          optAll: "Everyday",
+          addBtn: "Add Bell",
+          deleteBtn: "Delete",
+        },
+        ne: {
+          title: "घण्टी प्रणाली",
+          statusHeading: "प्रणालीको अवस्था",
+          stateLabel: "अवस्था:",
+          timeLabel: "उपकरणको समय:",
+          syncBtn: "समय मिलाउनुहोस्",
+          audioTest: "आवाज परीक्षण",
+          playBtn: "आवाज बजाउनुहोस्",
+          scheduleHeading: "समय तालिका सम्पादन",
+          thTime: "समय",
+          thDays: "दिनहरू",
+          thAudio: "आवाज",
+          thAction: "कार्य",
+          optMonFri: "सोम-शुक्र",
+          optAll: "हरेक दिन",
+          addBtn: "थप्नुहोस्",
+          deleteBtn: "हटाउनुहोस्",
+        },
+      };
 
-        let lang = 'en';
-        let theme = 'light';
-        const API_BASE = 'api.php?endpoint=';
+      let lang = "en";
+      let theme = "light";
+      const API_BASE = "api.php?endpoint=";
 
-        function toggleLang() {
-            lang = lang === 'en' ? 'ne' : 'en';
-            document.getElementById('lang-btn').innerText = lang === 'en' ? 'NEP' : 'ENG';
-            updateTexts();
+      function toggleLang() {
+        lang = lang === "en" ? "ne" : "en";
+        document.getElementById("lang-btn").innerText =
+          lang === "en" ? "NEP" : "ENG";
+        updateTexts();
+      }
+
+      function toggleTheme() {
+        theme = theme === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+
+      function updateTexts() {
+        const keys = Object.keys(dict[lang]);
+        keys.forEach((k) => {
+          const el = document.getElementById(`t-${k}`);
+          if (el) el.innerText = dict[lang][k];
+        });
+        renderSchedule();
+      }
+
+      let schedule = [
+        { id: 1, time: "09:00", days: "MON-FRI", audio: "morning.mp3" },
+        { id: 2, time: "16:00", days: "MON-FRI", audio: "evening.mp3" },
+      ];
+      let audios = [];
+
+      async function fetchStatus() {
+        try {
+          const res = await fetch(API_BASE + "status");
+          const data = await res.json();
+          document.getElementById("sys-state").innerText = data.state;
+          document.getElementById("sys-time").innerText = data.time;
+        } catch (e) {
+          console.warn("Failed to fetch status");
         }
+      }
 
-        function toggleTheme() {
-            theme = theme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', theme);
+      async function fetchAudioList() {
+        try {
+          const res = await fetch(API_BASE + "audio_list");
+          audios = await res.json();
+          const sel = document.getElementById("audio-select");
+          sel.innerHTML = audios
+            .map((a) => `<option value="${a}">${a}</option>`)
+            .join("");
+        } catch (e) {
+          console.warn("Failed to fetch audio list");
         }
+      }
 
-        function updateTexts() {
-            const keys = Object.keys(dict[lang]);
-            keys.forEach(k => {
-                const el = document.getElementById(`t-${k}`);
-                if(el) el.innerText = dict[lang][k];
-            });
-            renderSchedule();
-        }
-
-        let schedule = [
-            { id: 1, time: "09:00", days: "MON-FRI", audio: "morning.mp3" },
-            { id: 2, time: "16:00", days: "MON-FRI", audio: "evening.mp3" }
-        ];
-        let audios = [];
-
-        async function fetchStatus() {
-            try {
-                const res = await fetch(API_BASE + 'status');
-                const data = await res.json();
-                document.getElementById('sys-state').innerText = data.state;
-                document.getElementById('sys-time').innerText = data.time;
-            } catch(e) { console.warn("Failed to fetch status"); }
-        }
-
-        async function fetchAudioList() {
-            try {
-                const res = await fetch(API_BASE + 'audio_list');
-                audios = await res.json();
-                const sel = document.getElementById('audio-select');
-                sel.innerHTML = audios.map(a => `<option value="${a}">${a}</option>`).join('');
-            } catch(e) { console.warn("Failed to fetch audio list"); }
-        }
-
-        function renderSchedule() {
-            const tbody = document.getElementById('schedule-body');
-            tbody.innerHTML = schedule.map(s => `
+      function renderSchedule() {
+        const tbody = document.getElementById("schedule-body");
+        tbody.innerHTML = schedule
+          .map(
+            (s) => `
                 <tr>
                     <td><strong>${s.time}</strong></td>
                     <td>${s.days}</td>
                     <td>${s.audio}</td>
                     <td><button onclick="deleteSchedule(${s.id})" style="border:none;background:var(--danger);color:white;padding:5px 10px;border-radius:4px;cursor:pointer;">${dict[lang].deleteBtn}</button></td>
                 </tr>
-            `).join('');
-        }
+            `,
+          )
+          .join("");
+      }
 
-        async function syncTime() {
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-            try {
-                await fetch(API_BASE + 'sync_time', {
-                    method: 'POST', body: JSON.stringify({ timestamp: Math.floor(now.getTime()/1000) })
-                });
-                alert("Time synced successfully: " + timeStr);
-                fetchStatus();
-            } catch(e) { alert("Sync failed."); }
+      async function syncTime() {
+        const now = new Date();
+        const timeStr = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+        try {
+          await fetch(API_BASE + "sync_time", {
+            method: "POST",
+            body: JSON.stringify({
+              timestamp: Math.floor(now.getTime() / 1000),
+            }),
+          });
+          alert("Time synced successfully: " + timeStr);
+          fetchStatus();
+        } catch (e) {
+          alert("Sync failed.");
         }
+      }
 
-        async function testAudio() {
-            const audio = document.getElementById('audio-select').value;
-            if(!audio) return;
-            alert("Playing command sent for: " + audio);
-        }
+      async function testAudio() {
+        const audio = document.getElementById("audio-select").value;
+        if (!audio) return;
+        alert("Playing command sent for: " + audio);
+      }
 
-        function deleteSchedule(id) {
-            schedule = schedule.filter(s => s.id !== id);
-            renderSchedule();
-        }
+      function deleteSchedule(id) {
+        schedule = schedule.filter((s) => s.id !== id);
+        renderSchedule();
+      }
 
-        document.getElementById('add-schedule-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const time = document.getElementById('new-time').value;
-            const days = document.getElementById('new-days').value;
-            schedule.push({ id: Date.now(), time, days, audio: 'bell.mp3' });
-            renderSchedule();
+      document
+        .getElementById("add-schedule-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const time = document.getElementById("new-time").value;
+          const days = document.getElementById("new-days").value;
+          schedule.push({ id: Date.now(), time, days, audio: "bell.mp3" });
+          renderSchedule();
         });
 
-        // Init
-        updateTexts();
-        fetchStatus();
-        fetchAudioList();
-        renderSchedule();
-        setInterval(fetchStatus, 5000);
+      // Init
+      updateTexts();
+      fetchStatus();
+      fetchAudioList();
+      renderSchedule();
+      setInterval(fetchStatus, 5000);
     </script>
-</body>
+  </body>
 </html>

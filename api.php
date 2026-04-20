@@ -15,14 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-function getMockState() {
+function getMockState()
+{
     return [
         "state" => "RUNNING",
         "time" => date("H:i:s")
     ];
 }
 
-function getMockAudio() {
+function getMockAudio()
+{
     return ["bell.mp3", "morning.mp3", "evening.mp3", "emergency.wav"];
 }
 
@@ -53,13 +55,13 @@ switch ($endpoint) {
         }
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE);
-        
+
         if (!isset($input['timestamp'])) {
             http_response_code(400);
             echo json_encode(["error" => "Missing timestamp"]);
             break;
         }
-        
+
         echo json_encode(["success" => true, "message" => "Time synchronized"]);
         break;
 
