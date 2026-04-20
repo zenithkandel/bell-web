@@ -1246,22 +1246,34 @@
         const val = document.getElementById("audio-select").value;
         if (!val) return;
         document.getElementById("audioPlayTrackName").innerText = val;
+        document.getElementById("inp-test-duration").value = "";
         document.getElementById("audioPlayModal").classList.add("active");
       }
 
       function playOnSystem() {
         const val = document.getElementById("audioPlayTrackName").innerText;
+        const dur =
+          parseInt(document.getElementById("inp-test-duration").value) || 0;
         document.getElementById("audioPlayModal").classList.remove("active");
         // Mock hardware play
+        const durText =
+          dur > 0
+            ? lang === "en"
+              ? ` for ${dur} seconds`
+              : ` ${dur} सेकेन्डको लागि`
+            : "";
         showAlert(
           lang === "en" ? "System Audio" : "प्रणाली आवाज",
           (lang === "en" ? "Testing hardware audio: " : "प्रणालीमा बज्दैछ: ") +
-            val,
+            val +
+            durText,
         );
       }
 
       function playOnDevice() {
         const val = document.getElementById("audioPlayTrackName").innerText;
+        const dur =
+          parseInt(document.getElementById("inp-test-duration").value) || 0;
         if (deviceAudioPlayer) {
           deviceAudioPlayer.pause();
           deviceAudioPlayer.currentTime = 0;
@@ -1270,6 +1282,14 @@
         deviceAudioPlayer.play().catch((e) => {
           showAlert("Play Error", "Could not play file on device.");
         });
+
+        if (dur > 0) {
+          setTimeout(() => {
+            if (deviceAudioPlayer) {
+              deviceAudioPlayer.pause();
+            }
+          }, dur * 1000);
+        }
       }
 
       function toggleAudioTab(tab) {
@@ -1370,7 +1390,7 @@
         const t = document.getElementById("inp-time").value;
         const d = parseInt(document.getElementById("inp-duration").value) || 0;
         if (!t) return;
-        
+
         if (editingTimeChipIdx >= 0) {
           timeChips[editingTimeChipIdx] = { time: t, duration: d };
           editingTimeChipIdx = -1;
@@ -1378,7 +1398,7 @@
         } else {
           timeChips.push({ time: t, duration: d });
         }
-        
+
         renderTimeChips();
         document.getElementById("inp-time").value = "";
         document.getElementById("inp-duration").value = "";
@@ -1387,10 +1407,10 @@
       function removeTimeChip(idx) {
         timeChips.splice(idx, 1);
         if (editingTimeChipIdx === idx) {
-            editingTimeChipIdx = -1;
-            document.getElementById("btn-add-time").innerText = dict[lang].add;
+          editingTimeChipIdx = -1;
+          document.getElementById("btn-add-time").innerText = dict[lang].add;
         } else if (editingTimeChipIdx > idx) {
-            editingTimeChipIdx--;
+          editingTimeChipIdx--;
         }
         renderTimeChips();
       }
@@ -1400,7 +1420,8 @@
         document.getElementById("inp-duration").value =
           timeChips[idx].duration || "";
         editingTimeChipIdx = idx;
-        document.getElementById("btn-add-time").innerText = dict[lang].update || "Update";
+        document.getElementById("btn-add-time").innerText =
+          dict[lang].update || "Update";
       }
 
       function renderTimeChips() {
@@ -1596,8 +1617,10 @@
       // Set initial lang btn and theme
       els.langBtn.innerText = lang === "en" ? "नेप" : "EN";
       document.documentElement.setAttribute("data-theme", theme);
-      document.getElementById("path-theme").setAttribute("d", theme === "dark" ? icons.sun : icons.moon);
-      
+      document
+        .getElementById("path-theme")
+        .setAttribute("d", theme === "dark" ? icons.sun : icons.moon);
+
       // Global Esc key listener for Modals
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
