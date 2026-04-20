@@ -1,6 +1,34 @@
 {
     "schedules": [
         {
+            "id": 1776687810331,
+            "title": "regular morning shift",
+            "type": "weekly",
+            "time": "09:00",
+            "times": [
+                {
+                    "time": "09:00",
+                    "duration": 0
+                },
+                {
+                    "time": "02:00",
+                    "duration": 0
+                },
+                {
+                    "time": "06:00",
+                    "duration": 0
+                }
+            ],
+            "audio": "u_7xr5ffk4oq-opening-bell-421471.mp3",
+            "days": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        },
+        {
             "id": 1776687119800,
             "type": "weekly",
             "time": "09:02",
