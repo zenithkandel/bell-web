@@ -638,6 +638,44 @@
       </div>
     </div>
 
+    <!-- Alert Modal -->
+    <div class="modal-overlay" id="alertModal" onclick="this.classList.remove('active')">
+      <div class="modal" style="max-width: 320px; text-align: center; padding: 24px;" onclick="event.stopPropagation()">
+        <h3 id="alertTitle" style="margin-top: 0; margin-bottom: 12px; font-weight: 600;">Alert</h3>
+        <p id="alertMessage" style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px;"></p>
+        <button class="btn btn-primary" onclick="document.getElementById('alertModal').classList.remove('active')" style="width: 100%; justify-content: center;" id="btn-alert-ok">OK</button>
+      </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal-overlay" id="confirmModal" onclick="this.classList.remove('active')">
+      <div class="modal" style="max-width: 320px; text-align: center; padding: 24px;" onclick="event.stopPropagation()">
+        <h3 id="confirmTitle" style="margin-top: 0; margin-bottom: 12px; font-weight: 600;">Confirm</h3>
+        <p id="confirmMessage" style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px;"></p>
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-outline" onclick="document.getElementById('confirmModal').classList.remove('active')" style="flex: 1; justify-content: center; color: var(--primary); border-color: var(--primary);" id="btn-confirm-cancel">Cancel</button>
+          <button class="btn btn-danger" id="btn-confirm-ok" style="flex: 1; justify-content: center;">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audio Player Modal -->
+    <div class="modal-overlay" id="audioPlayModal" onclick="this.classList.remove('active')">
+      <div class="modal" style="max-width: 400px;" onclick="event.stopPropagation()">
+        <div class="card-header" style="margin-bottom: 16px">
+          <div class="card-title">Test Audio</div>
+          <button class="btn-icon" style="width: 32px; height: 32px; border: none; background: transparent;" onclick="document.getElementById('audioPlayModal').classList.remove('active')">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+        <p id="audioPlayTrackName" style="margin-bottom: 16px; font-weight: 500; text-align: center;"></p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button class="btn btn-primary" style="justify-content: center;" onclick="playOnSystem()">Play in Bell System</button>
+          <button class="btn btn-outline" style="justify-content: center; color: var(--primary); border-color: var(--primary);" onclick="playOnDevice()">Play on this Device</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Add/Edit Modal -->
     <div
       class="modal-overlay"
@@ -1017,6 +1055,27 @@
       }
 
       // Sync Time
+      function showAlert(title, message) {
+        document.getElementById("alertTitle").innerText = title;
+        document.getElementById("alertMessage").innerText = message;
+        document.getElementById("btn-alert-ok").innerText = lang === "en" ? "OK" : "ठीक छ";
+        document.getElementById("alertModal").classList.add("active");
+      }
+
+      function showConfirm(title, message, onConfirm) {
+        document.getElementById("confirmTitle").innerText = title;
+        document.getElementById("confirmMessage").innerText = message;
+        document.getElementById("btn-confirm-cancel").innerText = lang === "en" ? "Cancel" : "रद्द";
+        document.getElementById("btn-confirm-ok").innerText = lang === "en" ? "Confirm" : "निश्चित";
+        
+        let okBtn = document.getElementById("btn-confirm-ok");
+        okBtn.onclick = () => {
+            document.getElementById("confirmModal").classList.remove("active");
+            onConfirm();
+        };
+        document.getElementById("confirmModal").classList.add("active");
+      }
+
       async function syncTime() {
         let timestamp = Math.floor(Date.now() / 1000);
         if (navigator.onLine) {
@@ -1025,7 +1084,9 @@
           const utc = d.getTime() + d.getTimezoneOffset() * 60000;
           const nepalTime = new Date(utc + 3600000 * 5.75);
           timestamp = Math.floor(nepalTime.getTime() / 1000);
-          alert("Nepal Time Sync Mode Activated. Timestamp: " + timestamp);
+          showAlert(lang === "en" ? "Sync Mode" : "सिङ्क मोड", (lang === "en" ? "Nepal Time Sync Mode Activated. Timestamp: " : "नेपाल समय सिङ्क गरियो। टाइमस्ट्याम्प: ") + timestamp);
+        } else {
+          showAlert(lang === "en" ? "Offline" : "अफलाइन", lang === "en" ? "Device Offline. Using local time." : "यन्त्र अफलाइन छ। स्थानीय समय प्रयोग गर्दैछ।");
         }
         try {
           await fetch(API_BASE + "sync_time", {
@@ -1034,13 +1095,37 @@
           });
           fetchStatus();
         } catch (e) {
-          alert("Failed to sync device.");
+          showAlert(lang === "en" ? "Error" : "त्रुटि", lang === "en" ? "Failed to sync device." : "यन्त्र सिङ्क गर्न असफल।");
         }
       }
 
+      let deviceAudioPlayer = null;
+
       function testAudio() {
         const val = document.getElementById("audio-select").value;
-        if (val) alert("Testing hardware audio: " + val);
+        if (!val) return;
+        document.getElementById("audioPlayTrackName").innerText = val;
+        document.getElementById("audioPlayModal").classList.add("active");
+      }
+
+      function playOnSystem() {
+        const val = document.getElementById("audioPlayTrackName").innerText;
+        document.getElementById("audioPlayModal").classList.remove("active");
+        // Mock hardware play
+        showAlert(lang === "en" ? "System Audio" : "प्रणाली आवाज", 
+          (lang === "en" ? "Testing hardware audio: " : "प्रणालीमा बज्दैछ: ") + val);
+      }
+
+      function playOnDevice() {
+        const val = document.getElementById("audioPlayTrackName").innerText;
+        if (deviceAudioPlayer) {
+          deviceAudioPlayer.pause();
+          deviceAudioPlayer.currentTime = 0;
+        }
+        deviceAudioPlayer = new Audio("audio/" + val);
+        deviceAudioPlayer.play().catch(e => {
+            showAlert("Play Error", "Could not play file on device.");
+        });
       }
 
       function toggleAudioTab(tab) {
