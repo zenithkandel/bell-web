@@ -535,9 +535,24 @@
               <label class="form-label" id="txt-chooseAudio"
                 >Select Track</label
               >
-              <select class="form-control" id="audio-select">
+              <select
+                class="form-control"
+                id="audio-select"
+                onchange="
+                  updateAudioLength('audio-select', 'txt-audio-select-len')
+                "
+              >
                 <option value="">Loading...</option>
               </select>
+              <div
+                id="txt-audio-select-len"
+                style="
+                  font-size: 12px;
+                  color: var(--text-muted);
+                  margin-top: 4px;
+                  display: none;
+                "
+              ></div>
             </div>
             <button
               class="btn btn-outline"
@@ -909,7 +924,21 @@
             <label class="form-label" id="txt-lblAudio"
               >Select Audio Track</label
             >
-            <select class="form-control" id="inp-audio" required></select>
+            <select
+              class="form-control"
+              id="inp-audio"
+              required
+              onchange="updateAudioLength('inp-audio', 'txt-inp-audio-len')"
+            ></select>
+            <div
+              id="txt-inp-audio-len"
+              style="
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 4px;
+                display: none;
+              "
+            ></div>
           </div>
 
           <div
@@ -975,6 +1004,8 @@
           uploadBtn: "Upload File",
           cancel: "Cancel",
           save: "Save Settings",
+          add: "Add",
+          update: "Update",
           daysShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
           daysFull: [
             "Sunday",
@@ -1018,6 +1049,8 @@
           uploadBtn: "अपलोड गर्नुहोस्",
           cancel: "रद्द",
           save: "सुरक्षित गर्नुहोस्",
+          add: "थप्नुहोस्",
+          update: "अद्यावधिक",
           daysShort: ["आइत", "सोम", "मंग", "बुध", "बिहि", "शुक्र", "शनि"],
           daysFull: [
             "आइतवार",
@@ -1174,7 +1207,33 @@
           document.getElementById("audio-select").innerHTML =
             opts || '<option value="">Network Error</option>';
           document.getElementById("inp-audio").innerHTML = opts;
+
+          updateAudioLength("audio-select", "txt-audio-select-len");
         } catch (e) {}
+      }
+
+      function updateAudioLength(selectId, textId) {
+        const val = document.getElementById(selectId).value;
+        const txtEl = document.getElementById(textId);
+        if (!val) {
+          txtEl.style.display = "none";
+          return;
+        }
+
+        txtEl.innerText =
+          lang === "en" ? "Loading duration..." : "अवधि लोड हुँदैछ...";
+        txtEl.style.display = "block";
+
+        const audio = new Audio("audio/" + val);
+        audio.addEventListener("loadedmetadata", () => {
+          const dur = Math.round(audio.duration);
+          txtEl.innerText =
+            lang === "en" ? `Duration: ${dur} sec` : `अवधि: ${dur} सेकेन्ड`;
+        });
+        audio.addEventListener("error", () => {
+          txtEl.innerText =
+            lang === "en" ? "Duration unavailable" : "अवधि उपलब्ध छैन";
+        });
       }
 
       // Sync Time
@@ -1384,7 +1443,11 @@
           document.getElementById("inp-duration").value = "";
           selectedDays = [1, 2, 3, 4, 5];
           document.getElementById("inp-date").value = "";
+          document.getElementById("inp-audio").selectedIndex = 0;
         }
+
+        updateAudioLength("inp-audio", "txt-inp-audio-len");
+
         renderTimeChips();
         renderDayPicker();
         modalOverlay.classList.add("active");
