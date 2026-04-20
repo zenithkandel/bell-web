@@ -31,7 +31,23 @@ switch ($endpoint) {
             http_response_code(405);
             exit;
         }
+        
+        $audios = [];
+        // Add defaults
         $audios = ["bell.mp3", "morning_prayer.mp3", "national_anthem.mp3", "exam_alert.mp3", "emergency_siren.wav"];
+        
+        // Scan audio directory if it exists
+        if (is_dir("audio")) {
+            $files = scandir("audio");
+            foreach ($files as $f) {
+                if ($f !== '.' && $f !== '..') {
+                    if (!in_array($f, $audios)) {
+                        $audios[] = $f;
+                    }
+                }
+            }
+        }
+        
         echo json_encode($audios);
         break;
 
@@ -56,16 +72,16 @@ switch ($endpoint) {
             exit;
         }
 
-        // Mock saving logic
-        // move_uploaded_file($_FILES["audio_file"]["tmp_name"], "audio/" . $fileName);
-
-        echo json_encode(["status" => "success", "message" => "File '$fileName' uploaded.", "file" => $fileName]);
-        break;
-
-    case 'sync_time':
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit;
+        if (!is_dir("audio")) {
+            mkdir("audio", 0777, true);
+        }
+        
+        if (move_uploaded_file($_FILES["audio_file"]["tmp_name"], "audio/" . $fileName)) {
+            echo json_encode(["status" => "success", "message" => "File '$fileName' uploaded successfully.", "file" => $fileName]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Failed to move uploaded file. Check folder permissions."]);
+        }
         }
         $input = json_decode(file_get_contents('php://input'), TRUE);
 
