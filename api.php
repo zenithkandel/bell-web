@@ -102,20 +102,38 @@ switch ($endpoint) {
         break;
 
     case 'schedule':
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
+        $dbFile = "database.json";
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if (file_exists($dbFile)) {
+                $db = json_decode(file_get_contents($dbFile), true);
+                echo json_encode(isset($db['schedules']) ? $db['schedules'] : []);
+            } else {
+                echo json_encode([]);
+            }
             exit;
         }
-        $input = json_decode(file_get_contents('php://input'), TRUE);
 
-        if (!is_array($input)) {
-            http_response_code(400);
-            echo json_encode(["status" => "error", "message" => "Invalid payload"]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), TRUE);
+
+            if (!is_array($input)) {
+                http_response_code(400);
+                echo json_encode(["status" => "error", "message" => "Invalid payload"]);
+                exit;
+            }
+
+            $currentDb = file_exists($dbFile) ? json_decode(file_get_contents($dbFile), true) : [];
+            if(!is_array($currentDb)) $currentDb = [];
+            $currentDb['schedules'] = $input;
+            
+            file_put_contents($dbFile, json_encode($currentDb, JSON_PRETTY_PRINT));
+
+            echo json_encode(["status" => "success", "message" => count($input) . " records saved effectively to configuration."]);
             exit;
         }
-
-        // Mock file writes or EEPROM commit for the JSON schedule sequence
-        echo json_encode(["status" => "success", "message" => count($input) . " records saved effectively to configuration."]);
+        
+        http_response_code(405);
         break;
 
     default:
