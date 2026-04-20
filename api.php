@@ -33,8 +33,6 @@ switch ($endpoint) {
         }
 
         $audios = [];
-        // Add defaults
-        $audios = ["bell.mp3", "morning_prayer.mp3", "national_anthem.mp3", "exam_alert.mp3", "emergency_siren.wav"];
 
         // Scan audio directory if it exists
         if (is_dir("audio")) {
