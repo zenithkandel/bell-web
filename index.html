@@ -500,39 +500,102 @@
           </button>
         </div>
 
-        <!-- Audio Tester -->
+        <!-- Audio Management -->
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="margin-bottom: 12px">
             <div class="card-title">
               <svg class="icon" viewBox="0 0 24 24">
                 <path
                   d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
                 />
               </svg>
-              <span id="txt-audioHeading">Audio testing</span>
+              <span id="txt-audioHeading">Audio Management</span>
             </div>
           </div>
-          <div class="form-group" style="margin-bottom: 16px">
-            <label class="form-label" id="txt-chooseAudio">Select Track</label>
-            <select class="form-control" id="audio-select">
-              <option value="">Loading...</option>
-            </select>
+
+          <div class="segmented-control" style="margin-bottom: 16px">
+            <div
+              class="segment active"
+              id="seg-test-audio"
+              onclick="toggleAudioTab('test')"
+            >
+              Test
+            </div>
+            <div
+              class="segment"
+              id="seg-upload-audio"
+              onclick="toggleAudioTab('upload')"
+            >
+              Upload
+            </div>
           </div>
-          <button
-            class="btn btn-outline"
-            style="
-              width: 100%;
-              justify-content: center;
-              color: var(--primary);
-              border-color: var(--primary);
-            "
-            onclick="testAudio()"
-          >
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            <span id="txt-playBtn">Play Selected Track</span>
-          </button>
+
+          <div id="tab-test-audio">
+            <div class="form-group" style="margin-bottom: 16px">
+              <label class="form-label" id="txt-chooseAudio"
+                >Select Track</label
+              >
+              <select class="form-control" id="audio-select">
+                <option value="">Loading...</option>
+              </select>
+            </div>
+            <button
+              class="btn btn-outline"
+              style="
+                width: 100%;
+                justify-content: center;
+                color: var(--primary);
+                border-color: var(--primary);
+              "
+              onclick="testAudio()"
+            >
+              <svg class="icon" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span id="txt-playBtn">Play Selected Track</span>
+            </button>
+          </div>
+
+          <div id="tab-upload-audio" class="hidden">
+            <form id="upload-form" onsubmit="uploadAudio(event)">
+              <div class="form-group" style="margin-bottom: 16px">
+                <label class="form-label" id="txt-lblUpload"
+                  >Upload New Audio (.mp3, .wav)</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="inp-audio-upload"
+                  accept=".mp3,.wav"
+                  required
+                  style="padding: 9px"
+                />
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="width: 100%; justify-content: center"
+                id="btn-do-upload"
+              >
+                <svg class="icon" viewBox="0 0 24 24">
+                  <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+                </svg>
+                <span id="txt-uploadBtn">Upload File</span>
+              </button>
+            </form>
+            <div
+              id="upload-status"
+              class="hidden"
+              style="
+                margin-top: 12px;
+                font-size: 14px;
+                font-weight: 500;
+                text-align: center;
+                padding: 8px;
+                border-radius: 8px;
+              "
+            ></div>
+          </div>
         </div>
       </div>
 
@@ -705,6 +768,8 @@
           lblDays: "Active Days",
           lblDate: "Specific Date",
           lblAudio: "Select Audio Track",
+          lblUpload: "Upload New Audio (.mp3, .wav)",
+          uploadBtn: "Upload File",
           cancel: "Cancel",
           save: "Save Settings",
           daysShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
@@ -746,6 +811,8 @@
           lblDays: "सक्रिय दिनहरू",
           lblDate: "विशेष मिति",
           lblAudio: "आवाज छान्नुहोस्",
+          lblUpload: "नयाँ फाइल हाल्नुहोस् (.mp3, .wav)",
+          uploadBtn: "अपलोड गर्नुहोस्",
           cancel: "रद्द",
           save: "सुरक्षित गर्नुहोस्",
           daysShort: ["आइत", "सोम", "मंग", "बुध", "बिहि", "शुक्र", "शनि"],
@@ -816,6 +883,8 @@
         lblDays: document.getElementById("txt-lblDays"),
         lblDate: document.getElementById("txt-lblDate"),
         lblAudio: document.getElementById("txt-lblAudio"),
+        lblUpload: document.getElementById("txt-lblUpload"),
+        uploadBtn: document.getElementById("txt-uploadBtn"),
         cancel: document.getElementById("txt-cancel"),
         save: document.getElementById("txt-save"),
         langBtn: document.getElementById("btn-lang"),
@@ -930,6 +999,63 @@
       function testAudio() {
         const val = document.getElementById("audio-select").value;
         if (val) alert("Testing hardware audio: " + val);
+      }
+
+      function toggleAudioTab(tab) {
+        if (tab === "test") {
+          document.getElementById("seg-test-audio").classList.add("active");
+          document
+            .getElementById("seg-upload-audio")
+            .classList.remove("active");
+          document.getElementById("tab-test-audio").classList.remove("hidden");
+          document.getElementById("tab-upload-audio").classList.add("hidden");
+        } else {
+          document.getElementById("seg-upload-audio").classList.add("active");
+          document.getElementById("seg-test-audio").classList.remove("active");
+          document
+            .getElementById("tab-upload-audio")
+            .classList.remove("hidden");
+          document.getElementById("tab-test-audio").classList.add("hidden");
+        }
+      }
+
+      async function uploadAudio(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById("inp-audio-upload");
+        const statusDiv = document.getElementById("upload-status");
+
+        if (!fileInput.files.length) return;
+
+        const formData = new FormData();
+        formData.append("audio_file", fileInput.files[0]);
+
+        document.getElementById("btn-do-upload").disabled = true;
+        statusDiv.classList.remove("hidden");
+        statusDiv.innerText =
+          lang === "en" ? "Uploading..." : "अपलोड हुँदैछ...";
+        statusDiv.style.color = "var(--primary)";
+
+        try {
+          const res = await fetch(API_BASE + "upload_audio", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await res.json();
+
+          if (data.status === "success") {
+            statusDiv.innerText = data.message;
+            statusDiv.style.color = "var(--success)";
+            fileInput.value = "";
+            fetchAudio(); // Refresh lists
+          } else {
+            throw new Error(data.message || "Upload Failed");
+          }
+        } catch (err) {
+          statusDiv.innerText = err.message;
+          statusDiv.style.color = "var(--danger)";
+        } finally {
+          document.getElementById("btn-do-upload").disabled = false;
+        }
       }
 
       /* Modal & Form Logic */

@@ -35,6 +35,33 @@ switch ($endpoint) {
         echo json_encode($audios);
         break;
 
+    case 'upload_audio':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit;
+        }
+        if (!isset($_FILES['audio_file'])) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "No file uploaded"]);
+            exit;
+        }
+
+        $fileName = basename($_FILES['audio_file']['name']);
+        $fileSize = $_FILES['audio_file']['size'];
+        $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        if ($fileType != "mp3" && $fileType != "wav") {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "Only MP3 & WAV files are allowed"]);
+            exit;
+        }
+
+        // Mock saving logic
+        // move_uploaded_file($_FILES["audio_file"]["tmp_name"], "audio/" . $fileName);
+
+        echo json_encode(["status" => "success", "message" => "File '$fileName' uploaded.", "file" => $fileName]);
+        break;
+
     case 'sync_time':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
