@@ -1,0 +1,17 @@
+{
+    "schedules": [
+        {
+            "id": 1776687119800,
+            "type": "weekly",
+            "time": "09:02",
+            "audio": "u_7xr5ffk4oq-opening-bell-421471.mp3",
+            "days": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        }
+    ]
+}
