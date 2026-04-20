@@ -841,22 +841,7 @@
       let theme = "light";
       let scheduleType = "weekly";
       let selectedDays = [1, 2, 3, 4, 5]; // Mon-Fri default
-      let schedules = [
-        {
-          id: 1,
-          type: "weekly",
-          time: "09:00",
-          days: [1, 2, 3, 4, 5],
-          audio: "morning.mp3",
-        },
-        {
-          id: 2,
-          type: "special",
-          time: "16:00",
-          date: "2026-05-15",
-          audio: "evening.mp3",
-        },
-      ];
+      let schedules = [];
       let audios = [];
       const API_BASE = "api.php?endpoint=";
 
@@ -948,6 +933,17 @@
       }, 1000);
 
       // Data Fetching
+      async function fetchSchedules() {
+        try {
+          const res = await fetch(API_BASE + "schedule");
+          const data = await res.json();
+          schedules = Array.isArray(data) ? data : [];
+          renderSchedules();
+        } catch (e) {
+          console.error("Failed to fetch schedules");
+        }
+      }
+
       async function fetchStatus() {
         try {
           const res = await fetch(API_BASE + "status");
@@ -1221,7 +1217,8 @@
       // Init App run
       updateUIStrings();
       renderDayPicker();
-      fetchAudio().then(renderSchedules);
+      fetchAudio();
+      fetchSchedules();
       fetchStatus();
     </script>
   </body>

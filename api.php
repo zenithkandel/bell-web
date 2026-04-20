@@ -103,7 +103,7 @@ switch ($endpoint) {
 
     case 'schedule':
         $dbFile = "database.json";
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if (file_exists($dbFile)) {
                 $db = json_decode(file_get_contents($dbFile), true);
@@ -124,15 +124,16 @@ switch ($endpoint) {
             }
 
             $currentDb = file_exists($dbFile) ? json_decode(file_get_contents($dbFile), true) : [];
-            if(!is_array($currentDb)) $currentDb = [];
+            if (!is_array($currentDb))
+                $currentDb = [];
             $currentDb['schedules'] = $input;
-            
+
             file_put_contents($dbFile, json_encode($currentDb, JSON_PRETTY_PRINT));
 
             echo json_encode(["status" => "success", "message" => count($input) . " records saved effectively to configuration."]);
             exit;
         }
-        
+
         http_response_code(405);
         break;
 
