@@ -1278,15 +1278,20 @@
           deviceAudioPlayer.pause();
           deviceAudioPlayer.currentTime = 0;
         }
-        deviceAudioPlayer = new Audio("audio/" + val);
-        deviceAudioPlayer.play().catch((e) => {
+
+        const player = new Audio("audio/" + val);
+        deviceAudioPlayer = player;
+
+        player.play().catch((e) => {
           showAlert("Play Error", "Could not play file on device.");
         });
 
         if (dur > 0) {
           setTimeout(() => {
-            if (deviceAudioPlayer) {
-              deviceAudioPlayer.pause();
+            // Only pause if this specific playback is still the active one
+            if (deviceAudioPlayer === player) {
+              player.pause();
+              player.currentTime = 0;
             }
           }, dur * 1000);
         }
