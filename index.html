@@ -639,39 +639,150 @@
     </div>
 
     <!-- Alert Modal -->
-    <div class="modal-overlay" id="alertModal" onclick="this.classList.remove('active')">
-      <div class="modal" style="max-width: 320px; text-align: center; padding: 24px;" onclick="event.stopPropagation()">
-        <h3 id="alertTitle" style="margin-top: 0; margin-bottom: 12px; font-weight: 600;">Alert</h3>
-        <p id="alertMessage" style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px;"></p>
-        <button class="btn btn-primary" onclick="document.getElementById('alertModal').classList.remove('active')" style="width: 100%; justify-content: center;" id="btn-alert-ok">OK</button>
+    <div
+      class="modal-overlay"
+      id="alertModal"
+      onclick="this.classList.remove('active')"
+    >
+      <div
+        class="modal"
+        style="max-width: 320px; text-align: center; padding: 24px"
+        onclick="event.stopPropagation()"
+      >
+        <h3
+          id="alertTitle"
+          style="margin-top: 0; margin-bottom: 12px; font-weight: 600"
+        >
+          Alert
+        </h3>
+        <p
+          id="alertMessage"
+          style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px"
+        ></p>
+        <button
+          class="btn btn-primary"
+          onclick="
+            document.getElementById('alertModal').classList.remove('active')
+          "
+          style="width: 100%; justify-content: center"
+          id="btn-alert-ok"
+        >
+          OK
+        </button>
       </div>
     </div>
 
     <!-- Confirm Modal -->
-    <div class="modal-overlay" id="confirmModal" onclick="this.classList.remove('active')">
-      <div class="modal" style="max-width: 320px; text-align: center; padding: 24px;" onclick="event.stopPropagation()">
-        <h3 id="confirmTitle" style="margin-top: 0; margin-bottom: 12px; font-weight: 600;">Confirm</h3>
-        <p id="confirmMessage" style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px;"></p>
-        <div style="display: flex; gap: 12px;">
-          <button class="btn btn-outline" onclick="document.getElementById('confirmModal').classList.remove('active')" style="flex: 1; justify-content: center; color: var(--primary); border-color: var(--primary);" id="btn-confirm-cancel">Cancel</button>
-          <button class="btn btn-danger" id="btn-confirm-ok" style="flex: 1; justify-content: center;">Confirm</button>
+    <div
+      class="modal-overlay"
+      id="confirmModal"
+      onclick="this.classList.remove('active')"
+    >
+      <div
+        class="modal"
+        style="max-width: 320px; text-align: center; padding: 24px"
+        onclick="event.stopPropagation()"
+      >
+        <h3
+          id="confirmTitle"
+          style="margin-top: 0; margin-bottom: 12px; font-weight: 600"
+        >
+          Confirm
+        </h3>
+        <p
+          id="confirmMessage"
+          style="margin-bottom: 24px; color: var(--text-muted); font-size: 14px"
+        ></p>
+        <div style="display: flex; gap: 12px">
+          <button
+            class="btn btn-outline"
+            onclick="
+              document.getElementById('confirmModal').classList.remove('active')
+            "
+            style="
+              flex: 1;
+              justify-content: center;
+              color: var(--primary);
+              border-color: var(--primary);
+            "
+            id="btn-confirm-cancel"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-danger"
+            id="btn-confirm-ok"
+            style="flex: 1; justify-content: center"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Audio Player Modal -->
-    <div class="modal-overlay" id="audioPlayModal" onclick="this.classList.remove('active')">
-      <div class="modal" style="max-width: 400px;" onclick="event.stopPropagation()">
+    <div
+      class="modal-overlay"
+      id="audioPlayModal"
+      onclick="this.classList.remove('active')"
+    >
+      <div
+        class="modal"
+        style="max-width: 400px"
+        onclick="event.stopPropagation()"
+      >
         <div class="card-header" style="margin-bottom: 16px">
           <div class="card-title">Test Audio</div>
-          <button class="btn-icon" style="width: 32px; height: 32px; border: none; background: transparent;" onclick="document.getElementById('audioPlayModal').classList.remove('active')">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          <button
+            class="btn-icon"
+            style="
+              width: 32px;
+              height: 32px;
+              border: none;
+              background: transparent;
+            "
+            onclick="
+              document
+                .getElementById('audioPlayModal')
+                .classList.remove('active')
+            "
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
           </button>
         </div>
-        <p id="audioPlayTrackName" style="margin-bottom: 16px; font-weight: 500; text-align: center;"></p>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <button class="btn btn-primary" style="justify-content: center;" onclick="playOnSystem()">Play in Bell System</button>
-          <button class="btn btn-outline" style="justify-content: center; color: var(--primary); border-color: var(--primary);" onclick="playOnDevice()">Play on this Device</button>
+        <p
+          id="audioPlayTrackName"
+          style="margin-bottom: 16px; font-weight: 500; text-align: center"
+        ></p>
+        
+        <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" id="txt-lblTestDuration">Play Duration (Seconds)</label>
+            <input type="number" id="inp-test-duration" class="form-control" placeholder="0 = Full Audio" min="0" value="" />
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <button
+            class="btn btn-primary"
+            style="justify-content: center"
+            onclick="playOnSystem()"
+          >
+            Play in Bell System
+          </button>
+          <button
+            class="btn btn-outline"
+            style="
+              justify-content: center;
+              color: var(--primary);
+              border-color: var(--primary);
+            "
+            onclick="playOnDevice()"
+          >
+            Play on this Device
+          </button>
         </div>
       </div>
     </div>
@@ -920,11 +1031,12 @@
       };
 
       // State variables
-      let lang = "en";
-      let theme = "light";
+      let lang = localStorage.getItem("bell-lang") || "en";
+      let theme = localStorage.getItem("bell-theme") || "light";
       let scheduleType = "weekly";
       let selectedDays = [1, 2, 3, 4, 5]; // Mon-Fri default
       let timeChips = [];
+      let editingTimeChipIdx = null;
       let schedules = [];
       let audios = [];
       const API_BASE = "api.php?endpoint=";
@@ -974,6 +1086,7 @@
       // Language & Theme logic
       function toggleLang() {
         lang = lang === "en" ? "ne" : "en";
+        localStorage.setItem("bell-lang", lang);
         els.langBtn.innerText = lang === "en" ? "नेप" : "EN";
         updateUIStrings();
         renderDayPicker();
@@ -982,6 +1095,7 @@
 
       function toggleTheme() {
         theme = theme === "light" ? "dark" : "light";
+        localStorage.setItem("bell-theme", theme);
         document.documentElement.setAttribute("data-theme", theme);
         document
           .getElementById("path-theme")
@@ -1058,20 +1172,23 @@
       function showAlert(title, message) {
         document.getElementById("alertTitle").innerText = title;
         document.getElementById("alertMessage").innerText = message;
-        document.getElementById("btn-alert-ok").innerText = lang === "en" ? "OK" : "ठीक छ";
+        document.getElementById("btn-alert-ok").innerText =
+          lang === "en" ? "OK" : "ठीक छ";
         document.getElementById("alertModal").classList.add("active");
       }
 
       function showConfirm(title, message, onConfirm) {
         document.getElementById("confirmTitle").innerText = title;
         document.getElementById("confirmMessage").innerText = message;
-        document.getElementById("btn-confirm-cancel").innerText = lang === "en" ? "Cancel" : "रद्द";
-        document.getElementById("btn-confirm-ok").innerText = lang === "en" ? "Confirm" : "निश्चित";
-        
+        document.getElementById("btn-confirm-cancel").innerText =
+          lang === "en" ? "Cancel" : "रद्द";
+        document.getElementById("btn-confirm-ok").innerText =
+          lang === "en" ? "Confirm" : "निश्चित";
+
         let okBtn = document.getElementById("btn-confirm-ok");
         okBtn.onclick = () => {
-            document.getElementById("confirmModal").classList.remove("active");
-            onConfirm();
+          document.getElementById("confirmModal").classList.remove("active");
+          onConfirm();
         };
         document.getElementById("confirmModal").classList.add("active");
       }
@@ -1084,9 +1201,19 @@
           const utc = d.getTime() + d.getTimezoneOffset() * 60000;
           const nepalTime = new Date(utc + 3600000 * 5.75);
           timestamp = Math.floor(nepalTime.getTime() / 1000);
-          showAlert(lang === "en" ? "Sync Mode" : "सिङ्क मोड", (lang === "en" ? "Nepal Time Sync Mode Activated. Timestamp: " : "नेपाल समय सिङ्क गरियो। टाइमस्ट्याम्प: ") + timestamp);
+          showAlert(
+            lang === "en" ? "Sync Mode" : "सिङ्क मोड",
+            (lang === "en"
+              ? "Nepal Time Sync Mode Activated. Timestamp: "
+              : "नेपाल समय सिङ्क गरियो। टाइमस्ट्याम्प: ") + timestamp,
+          );
         } else {
-          showAlert(lang === "en" ? "Offline" : "अफलाइन", lang === "en" ? "Device Offline. Using local time." : "यन्त्र अफलाइन छ। स्थानीय समय प्रयोग गर्दैछ।");
+          showAlert(
+            lang === "en" ? "Offline" : "अफलाइन",
+            lang === "en"
+              ? "Device Offline. Using local time."
+              : "यन्त्र अफलाइन छ। स्थानीय समय प्रयोग गर्दैछ।",
+          );
         }
         try {
           await fetch(API_BASE + "sync_time", {
@@ -1095,7 +1222,12 @@
           });
           fetchStatus();
         } catch (e) {
-          showAlert(lang === "en" ? "Error" : "त्रुटि", lang === "en" ? "Failed to sync device." : "यन्त्र सिङ्क गर्न असफल।");
+          showAlert(
+            lang === "en" ? "Error" : "त्रुटि",
+            lang === "en"
+              ? "Failed to sync device."
+              : "यन्त्र सिङ्क गर्न असफल।",
+          );
         }
       }
 
@@ -1112,8 +1244,11 @@
         const val = document.getElementById("audioPlayTrackName").innerText;
         document.getElementById("audioPlayModal").classList.remove("active");
         // Mock hardware play
-        showAlert(lang === "en" ? "System Audio" : "प्रणाली आवाज", 
-          (lang === "en" ? "Testing hardware audio: " : "प्रणालीमा बज्दैछ: ") + val);
+        showAlert(
+          lang === "en" ? "System Audio" : "प्रणाली आवाज",
+          (lang === "en" ? "Testing hardware audio: " : "प्रणालीमा बज्दैछ: ") +
+            val,
+        );
       }
 
       function playOnDevice() {
@@ -1123,8 +1258,8 @@
           deviceAudioPlayer.currentTime = 0;
         }
         deviceAudioPlayer = new Audio("audio/" + val);
-        deviceAudioPlayer.play().catch(e => {
-            showAlert("Play Error", "Could not play file on device.");
+        deviceAudioPlayer.play().catch((e) => {
+          showAlert("Play Error", "Could not play file on device.");
         });
       }
 
@@ -1232,14 +1367,22 @@
         renderTimeChips();
       }
 
+      function editTimeChip(idx) {
+        document.getElementById("inp-time").value = timeChips[idx].time;
+        document.getElementById("inp-duration").value =
+          timeChips[idx].duration || "";
+        timeChips.splice(idx, 1);
+        renderTimeChips();
+      }
+
       function renderTimeChips() {
         const container = document.getElementById("time-chips-container");
         container.innerHTML = timeChips
           .map(
             (chip, idx) => `
             <div style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 16px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
-                <span style="font-weight: 500;">${chip.time}</span>
-                <span style="color: var(--text-muted); font-size: 11px;">(${chip.duration > 0 ? chip.duration + "s" : "Full"})</span>
+                <span style="font-weight: 500; cursor: pointer; color: var(--primary);" onclick="editTimeChip(${idx})" title="Edit Time">${chip.time}</span>
+                <span style="color: var(--text-muted); font-size: 11px; cursor: pointer;" onclick="editTimeChip(${idx})">(${chip.duration > 0 ? chip.duration + "s" : "Full"})</span>
                 <svg onclick="removeTimeChip(${idx})" class="icon" style="width: 14px; height: 14px; cursor: pointer; color: var(--danger);" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </div>
         `,
@@ -1298,11 +1441,21 @@
         .addEventListener("submit", async (e) => {
           e.preventDefault();
           if (scheduleType === "weekly" && selectedDays.length === 0) {
-            alert("Please select at least one active day.");
+            showAlert(
+              lang === "en" ? "Warning" : "चेतावनी",
+              lang === "en"
+                ? "Please select at least one active day."
+                : "कृपया कम्तिमा एक सक्रिय दिन छान्नुहोस्।",
+            );
             return;
           }
           if (timeChips.length === 0) {
-            alert("Please add at least one execution time.");
+            showAlert(
+              lang === "en" ? "Warning" : "चेतावनी",
+              lang === "en"
+                ? "Please add at least one execution time."
+                : "कृपया कम्तिमा एक बज्ने समय थप्नुहोस्।",
+            );
             return;
           }
           const idVal = document.getElementById("edit-id").value;
@@ -1343,10 +1496,16 @@
         });
 
       function deleteSchedule(id) {
-        if (confirm("Remove schedule?")) {
-          schedules = schedules.filter((s) => s.id !== id);
-          renderSchedules();
-        }
+        showConfirm(
+          lang === "en" ? "Remove Schedule?" : "हटाउनुहोस्?",
+          lang === "en"
+            ? "Are you sure you want to remove this schedule?"
+            : "के तपाईँ यो तालिका हटाउन निश्चित हुनुहुन्छ?",
+          () => {
+            schedules = schedules.filter((s) => s.id !== id);
+            renderSchedules();
+          },
+        );
       }
 
       // Render List
