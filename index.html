@@ -3,249 +3,453 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bell System Configuration</title>
+    <title>Smart Bell System</title>
     <style>
       :root {
-        --bg: #f4f6f8;
-        --text: #2c3e50;
-        --primary: #3498db;
-        --secondary: #2ecc71;
-        --danger: #e74c3c;
-        --border: #dcdde1;
-        --card-bg: #ffffff;
-        --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        /* Light Theme Defaults */
+        --bg-color: #f0f4f8;
+        --surface-color: #ffffff;
+        --text-main: #2d3748;
+        --text-muted: #718096;
+        --border-color: #e2e8f0;
+        --primary: #3b82f6;
+        --primary-hover: #2563eb;
+        --success: #10b981;
+        --danger: #ef4444;
+        --danger-hover: #dc2626;
+        --warning: #f59e0b;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-md:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --font-family:
+          system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+          sans-serif;
+        --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+
       [data-theme="dark"] {
-        --bg: #1a1a1d;
-        --text: #f5f6fa;
-        --primary: #54a0ff;
-        --secondary: #2ed573;
-        --danger: #ff6b81;
-        --border: #2f3640;
-        --card-bg: #222f3e;
+        --bg-color: #0f172a;
+        --surface-color: #1e293b;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --border-color: #334155;
+        --primary: #60a5fa;
+        --primary-hover: #3b82f6;
+        --success: #34d399;
+        --danger: #f87171;
+        --danger-hover: #ef4444;
+        --warning: #fbbf24;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
       }
-      body {
-        font-family: var(--font-main);
-        background-color: var(--bg);
-        color: var(--text);
+
+      * {
+        box-sizing: border-box;
         margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--font-family);
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.5;
         padding: 20px;
-        font-size: 16px;
+        padding-bottom: 80px;
         transition:
-          background 0.3s,
+          background-color 0.3s,
           color 0.3s;
       }
+
       .container {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
       }
+
+      /* Header */
       header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--card-bg);
-        padding: 15px 25px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-        border: 1px solid var(--border);
+        background: var(--surface-color);
+        padding: 16px 24px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 24px;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        flex-wrap: wrap;
+        gap: 15px;
       }
-      .header-title {
-        font-size: 24px;
-        font-weight: bold;
-        color: var(--primary);
+
+      .brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
       }
       .controls {
         display: flex;
-        gap: 10px;
         align-items: center;
-      }
-      .controls button {
-        padding: 8px 12px;
-        cursor: pointer;
-        border: 1px solid var(--border);
-        background: var(--bg);
-        color: var(--text);
-        border-radius: 8px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: 0.2s;
-      }
-      .controls button:hover {
-        border-color: var(--primary);
-      }
-      .card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      }
-      h2 {
-        color: var(--primary);
-        margin-top: 0;
-        margin-bottom: 15px;
-        font-size: 20px;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 8px;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
-      @media (max-width: 768px) {
-        .grid {
-          grid-template-columns: 1fr;
-        }
+        gap: 12px;
       }
 
-      .status-box {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+      /* Utilities */
+      .icon {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
       }
+      .badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .badge-success {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--success);
+      }
+      .badge-danger {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+      }
+      .badge-warning {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--warning);
+      }
+
+      /* Buttons */
+      .btn-icon {
+        background: var(--bg-color);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .btn-icon:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: scale(1.05);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+      }
+      .btn-outline:hover {
+        background: var(--bg-color);
+        border-color: var(--text-muted);
+      }
+      .btn-danger {
+        background: var(--danger);
+        color: #fff;
+      }
+      .btn-danger:hover {
+        background: var(--danger-hover);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      }
+
+      /* Grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+      .card {
+        background: var(--surface-color);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+      }
+      .card:hover {
+        box-shadow: var(--shadow-md);
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Dashboard Items */
       .status-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--bg);
-        padding: 12px 15px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color);
       }
-      .badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 14px;
+      .status-row:last-child {
+        border-bottom: none;
       }
-      .badge.success {
-        background: var(--secondary);
-        color: #fff;
-      }
-      .badge.error {
-        background: var(--danger);
-        color: #fff;
+      .time-display {
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--primary);
+        letter-spacing: 1px;
       }
 
-      input,
-      select,
-      button {
-        font-size: 16px;
-        padding: 10px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--bg);
-        color: var(--text);
+      /* Table */
+      .list-container {
+        overflow-x: auto;
       }
-      input:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--primary);
-      }
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px;
-        width: 100%;
-        transition: 0.2s;
-      }
-      .btn-primary:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-      }
-      .btn-danger {
-        background: var(--danger);
-        color: white;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-        padding: 8px 12px;
-        border-radius: 6px;
-      }
-      .btn-danger:hover {
-        opacity: 0.9;
-      }
-
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 15px;
-      }
-      th,
-      td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
       }
       th {
-        background: var(--bg);
-        font-weight: 600;
-        color: var(--primary);
+        text-align: left;
+        padding: 14px 16px;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        border-bottom: 2px solid var(--border-color);
       }
-      tbody tr:hover {
-        background: var(--bg);
+      td {
+        padding: 16px;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 15px;
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover {
+        background-color: var(--bg-color);
+      }
+      .time-col {
+        font-weight: 700;
+        font-family: monospace;
+        font-size: 17px;
+        color: var(--text-main);
       }
 
-      .icon {
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
-      }
-
-      .add-form {
+      /* Modals */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
         display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        background: var(--bg);
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        margin-top: 15px;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: var(--transition);
       }
-      .add-form > div {
-        flex: 1;
-        min-width: 150px;
+      .modal-overlay.active {
+        opacity: 1;
+        pointer-events: all;
       }
-      .add-form input,
-      .add-form select {
+      .modal {
+        background: var(--surface-color);
+        width: 90%;
+        max-width: 500px;
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(20px);
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+      }
+      .modal-overlay.active .modal {
+        transform: translateY(0);
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+      .form-control {
         width: 100%;
-        box-sizing: border-box;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-family: inherit;
+        background: var(--bg-color);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        transition: var(--transition);
+        outline: none;
+      }
+      .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      /* Chips Input (Days selection) */
+      .day-picker {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .day-chip {
+        flex: 1;
+        min-width: 40px;
+        text-align: center;
+        padding: 10px 0;
+        background: var(--bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text-muted);
+        transition: var(--transition);
+        user-select: none;
+      }
+      .day-chip.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+        box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+      }
+
+      /* Segmented Control */
+      .segmented-control {
+        display: flex;
+        background: var(--bg-color);
+        border-radius: 8px;
+        padding: 4px;
+        margin-bottom: 20px;
+        border: 1px solid var(--border-color);
+      }
+      .segment {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 6px;
+        transition: var(--transition);
+        user-select: none;
+      }
+      .segment.active {
+        background: var(--surface-color);
+        color: var(--primary);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .hidden {
+        display: none !important;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <div class="header-title">
-          <svg class="icon" viewBox="0 0 24 24">
+        <div class="brand">
+          <svg
+            class="icon"
+            style="width: 28px; height: 28px"
+            viewBox="0 0 24 24"
+          >
             <path
-              d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"
+              d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
             />
           </svg>
-          <span id="t-title">Bell System</span>
+          <span id="txt-title">Smart Bell</span>
         </div>
         <div class="controls">
-          <div class="badge" id="net-status">Checking...</div>
-          <button onclick="toggleLang()" id="lang-btn">NEP</button>
-          <button onclick="toggleTheme()" id="theme-btn">
-            <svg id="theme-icon" class="icon" viewBox="0 0 24 24">
+          <div class="badge badge-success" id="net-status">
+            <span
+              class="dot"
+              style="
+                width: 8px;
+                height: 8px;
+                background: currentColor;
+                border-radius: 50%;
+                display: inline-block;
+              "
+            ></span>
+            <span id="txt-online">Online</span>
+          </div>
+          <button
+            class="btn-icon"
+            onclick="toggleLang()"
+            id="btn-lang"
+            title="Toggle Language"
+          >
+            EN
+          </button>
+          <button
+            class="btn-icon"
+            onclick="toggleTheme()"
+            id="btn-theme"
+            title="Toggle Theme"
+          >
+            <svg id="icon-theme" class="icon" viewBox="0 0 24 24">
               <path
-                id="theme-path"
+                id="path-theme"
                 d="M12 21a9 9 0 0 1-6.36-15.36A9 9 0 0 0 21 12a9 9 0 0 1-9 9z"
               />
             </svg>
@@ -254,139 +458,219 @@
       </header>
 
       <div class="grid">
+        <!-- Status Card -->
         <div class="card">
-          <h2 id="t-statusHeading">System Status</h2>
-          <div class="status-box">
-            <div class="status-row">
-              <strong id="t-stateLabel">State:</strong>
-              <span id="sys-state" class="badge success">RUNNING</span>
-            </div>
-            <div class="status-row">
-              <strong id="t-timeLabel">Device Time:</strong>
-              <span
-                id="sys-time"
-                style="font-family: monospace; font-size: 1.1em"
-                >--:--:--</span
-              >
-            </div>
-            <button
-              class="btn-primary"
-              onclick="syncTime()"
-              style="margin-top: 10px"
-            >
+          <div class="card-header">
+            <div class="card-title">
               <svg class="icon" viewBox="0 0 24 24">
                 <path
-                  d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+                  d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"
                 />
               </svg>
-              <span id="t-syncBtn">Sync Time</span>
-            </button>
+              <span id="txt-sysHeading">Time & Status</span>
+            </div>
           </div>
+          <div class="status-row">
+            <span
+              style="font-weight: 500; color: var(--text-muted)"
+              id="txt-deviceState"
+              >System State</span
+            >
+            <div class="badge badge-success" id="sys-state">RUNNING</div>
+          </div>
+          <div class="status-row">
+            <span
+              style="font-weight: 500; color: var(--text-muted)"
+              id="txt-sysTime"
+              >Current Time</span
+            >
+            <div class="time-display" id="sys-time">--:--:--</div>
+          </div>
+          <button
+            class="btn btn-primary"
+            style="width: 100%; margin-top: 16px; justify-content: center"
+            onclick="syncTime()"
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+              />
+            </svg>
+            <span id="txt-syncTime">Sync (Nepal Time)</span>
+          </button>
         </div>
 
+        <!-- Audio Tester -->
         <div class="card">
-          <h2 id="t-audioTest">Audio Test</h2>
-          <div class="status-box">
-            <div class="status-row">
-              <select
-                id="audio-select"
-                style="
-                  width: 100%;
-                  border: none;
-                  background: transparent;
-                  padding: 0;
-                "
-              >
-                <option value="">Loading audios...</option>
-              </select>
-            </div>
-            <button
-              class="btn-primary"
-              onclick="testAudio()"
-              style="margin-top: 10px"
-            >
+          <div class="card-header">
+            <div class="card-title">
               <svg class="icon" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
+                <path
+                  d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+                />
               </svg>
-              <span id="t-playBtn">Play Audio</span>
-            </button>
+              <span id="txt-audioHeading">Audio testing</span>
+            </div>
           </div>
+          <div class="form-group" style="margin-bottom: 16px">
+            <label class="form-label" id="txt-chooseAudio">Select Track</label>
+            <select class="form-control" id="audio-select">
+              <option value="">Loading...</option>
+            </select>
+          </div>
+          <button
+            class="btn btn-outline"
+            style="
+              width: 100%;
+              justify-content: center;
+              color: var(--primary);
+              border-color: var(--primary);
+            "
+            onclick="testAudio()"
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <span id="txt-playBtn">Play Selected Track</span>
+          </button>
         </div>
       </div>
 
+      <!-- Schedule Configuration -->
       <div class="card">
-        <h2 id="t-scheduleHeading">Schedule Management</h2>
-        <div style="overflow-x: auto">
+        <div class="card-header">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+              />
+            </svg>
+            <span id="txt-scheduleHeading">Schedule Configuration</span>
+          </div>
+          <button class="btn btn-primary" onclick="openModal()">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+            </svg>
+            <span id="txt-addSchedule">Add Bell</span>
+          </button>
+        </div>
+
+        <div class="list-container">
           <table>
             <thead>
               <tr>
-                <th id="t-thTime">Time</th>
-                <th id="t-thDays">Days</th>
-                <th id="t-thAudio">Audio File</th>
-                <th id="t-thAction">Actions</th>
+                <th id="txt-thTime">Time</th>
+                <th id="txt-thDays">Schedule / Date</th>
+                <th id="txt-thAudio">Audio File</th>
+                <th style="width: 140px; text-align: right" id="txt-thAction">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody id="schedule-body">
-              <!-- rows -->
+              <!-- Dynamic content -->
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
 
-        <form id="add-schedule-form" class="add-form">
-          <div>
-            <label
-              id="t-lblTime"
-              style="
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-                display: block;
-                color: var(--primary);
-              "
-              >Set Time</label
-            >
-            <input type="time" id="new-time" required />
+    <!-- Add/Edit Modal -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="handleOverlayClick(event)"
+    >
+      <div class="modal">
+        <div class="card-header" style="margin-bottom: 16px">
+          <div class="card-title" id="txt-modalTitle">Configure Schedule</div>
+          <button
+            class="btn-icon"
+            style="
+              width: 32px;
+              height: 32px;
+              border: none;
+              background: transparent;
+            "
+            onclick="closeModal()"
+          >
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="segmented-control">
+          <div
+            class="segment active"
+            id="seg-weekly"
+            onclick="setScheduleType('weekly')"
+          >
+            Weekly Repeat
           </div>
-          <div>
-            <label
-              id="t-lblDays"
-              style="
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-                display: block;
-                color: var(--primary);
-              "
-              >Select Days</label
-            >
-            <select id="new-days" required>
-              <option value="MON-FRI" id="t-optMonFri">Mon-Fri</option>
-              <option value="SUN-THU" id="t-optSunThu">Sun-Thu</option>
-              <option value="ALL" id="t-optAll">Everyday</option>
-            </select>
+          <div
+            class="segment"
+            id="seg-special"
+            onclick="setScheduleType('special')"
+          >
+            Special Date
           </div>
-          <div>
-            <label
-              id="t-lblAudio"
-              style="
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-                display: block;
-                color: var(--primary);
-              "
-              >Select Audio</label
-            >
-            <select id="new-audio" required>
-              <option value="bell.mp3">bell.mp3</option>
-            </select>
+        </div>
+
+        <form id="schedule-form">
+          <input type="hidden" id="edit-id" />
+
+          <div class="form-group">
+            <label class="form-label" id="txt-lblTime">Execution Time</label>
+            <input type="time" class="form-control" id="inp-time" required />
           </div>
-          <div style="display: flex; align-items: flex-end">
-            <button type="submit" class="btn-primary" id="t-addBtn">
-              <svg class="icon" viewBox="0 0 24 24">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-              </svg>
-              Add Record
+
+          <div class="form-group" id="group-days">
+            <label class="form-label" id="txt-lblDays">Active Days</label>
+            <div class="day-picker" id="day-picker">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+
+          <div class="form-group hidden" id="group-date">
+            <label class="form-label" id="txt-lblDate">Specific Date</label>
+            <input type="date" class="form-control" id="inp-date" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="txt-lblAudio"
+              >Select Audio Track</label
+            >
+            <select class="form-control" id="inp-audio" required></select>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 12px;
+              margin-top: 24px;
+              padding-top: 16px;
+              border-top: 1px solid var(--border-color);
+            "
+          >
+            <button
+              type="button"
+              class="btn btn-outline"
+              style="flex: 1; justify-content: center"
+              onclick="closeModal()"
+              id="txt-cancel"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              style="flex: 2; justify-content: center"
+              id="txt-save"
+            >
+              Save Settings
             </button>
           </div>
         </form>
@@ -394,54 +678,89 @@
     </div>
 
     <script>
+      // Localization Dictionary
       const dict = {
         en: {
-          title: "Bell System",
-          statusHeading: "System Status",
-          stateLabel: "Device State",
-          timeLabel: "Current Time",
-          syncBtn: "Sync Time",
-          audioTest: "Audio Settings",
-          playBtn: "Play Audio",
-          scheduleHeading: "Schedule Management",
+          title: "Smart Bell",
+          online: "Online",
+          offline: "Offline",
+          sysHeading: "Time & Status",
+          deviceState: "System State",
+          sysTime: "Local Time",
+          syncTime: "Sync (Nepal Time)",
+          audioHeading: "Audio Testing",
+          chooseAudio: "Select Track",
+          playBtn: "Play Selected Track",
+          scheduleHeading: "Schedule Configuration",
+          addSchedule: "Add Bell",
           thTime: "Time",
-          thDays: "Days",
+          thDays: "Schedule / Date",
           thAudio: "Audio File",
           thAction: "Actions",
-          optMonFri: "Mon-Fri (INTL)",
-          optSunThu: "Sun-Thu (NEP)",
-          optAll: "Everyday",
-          addBtn: "Add Record",
-          deleteBtn: "Delete",
-          netOnline: "Online",
-          netOffline: "Offline",
-          lblTime: "Set Time",
-          lblDays: "Select Days",
-          lblAudio: "Select Audio",
+          modalTitleAdd: "Configure Schedule",
+          modalTitleEdit: "Edit Schedule",
+          segWeekly: "Weekly Repeat",
+          segSpecial: "Special Date",
+          lblTime: "Execution Time",
+          lblDays: "Active Days",
+          lblDate: "Specific Date",
+          lblAudio: "Select Audio Track",
+          cancel: "Cancel",
+          save: "Save Settings",
+          daysShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+          daysFull: [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ],
+          edit: "Edit",
+          delete: "Delete",
+          specialPrefix: "Date: ",
         },
         ne: {
-          title: "घण्टी प्रणाली",
-          statusHeading: "प्रणाली अवस्था",
-          stateLabel: "उपकरण अवस्था",
-          timeLabel: "वर्तमान समय",
-          syncBtn: "समय मिलाउनुहोस्",
-          audioTest: "आवाज सेटिङ",
+          title: "स्मार्ट घण्टी",
+          online: "अनलाइन",
+          offline: "अफलाइन",
+          sysHeading: "समय र अवस्था",
+          deviceState: "प्रणाली अवस्था",
+          sysTime: "स्थानीय समय",
+          syncTime: "समय मिलाउनुहोस्",
+          audioHeading: "आवाज परीक्षण",
+          chooseAudio: "आवाज छान्नुहोस्",
           playBtn: "बजाउनुहोस्",
           scheduleHeading: "समय तालिका व्यवस्थापन",
+          addSchedule: "घण्टी थप्नुहोस्",
           thTime: "समय",
-          thDays: "दिनहरू",
+          thDays: "तालिका / मिति",
           thAudio: "आवाज फाइल",
-          thAction: "सुविधाहरु",
-          optMonFri: "सोम-शुक्र",
-          optSunThu: "आइत-बिहि",
-          optAll: "हरेक दिन",
-          addBtn: "थप्नुहोस्",
-          deleteBtn: "हटाउनुहोस्",
-          netOnline: "अनलाइन",
-          netOffline: "अफलाइन",
-          lblTime: "समय छान्नुहोस्",
-          lblDays: "दिन छान्नुहोस्",
+          thAction: "कार्य",
+          modalTitleAdd: "नयाँ तालिका",
+          modalTitleEdit: "तालिका सम्पादन",
+          segWeekly: "साप्ताहिक",
+          segSpecial: "विशेष मिति",
+          lblTime: "बज्ने समय",
+          lblDays: "सक्रिय दिनहरू",
+          lblDate: "विशेष मिति",
           lblAudio: "आवाज छान्नुहोस्",
+          cancel: "रद्द",
+          save: "सुरक्षित गर्नुहोस्",
+          daysShort: ["आइत", "सोम", "मंग", "बुध", "बिहि", "शुक्र", "शनि"],
+          daysFull: [
+            "आइतवार",
+            "सोमबार",
+            "मंगलबार",
+            "बुधबार",
+            "बिहिबार",
+            "शुक्रबार",
+            "शनिबार",
+          ],
+          edit: "सच्याउनुहोस्",
+          delete: "हटाउनुहोस्",
+          specialPrefix: "मिति: ",
         },
       };
 
@@ -450,167 +769,334 @@
         sun: "M12 7a5 5 0 1 0 5 5 5.006 5.006 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3.003 3.003 0 0 1-3 3zm9-4h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2zM5 11H3a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2zm7-6V3a1 1 0 0 0-2 0v2a1 1 0 0 0 2 0zm0 14v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-2 0zm5.66-10.74l1.41-1.41a1 1 0 0 0-1.41-1.41l-1.41 1.41a1 1 0 0 0 1.41 1.41zM6.34 16.26l-1.41 1.41a1 1 0 0 0 1.41 1.41l1.41-1.41a1 1 0 0 0-1.41-1.41zm11.32.01a1 1 0 0 0-1.41 1.41l1.41 1.41a1 1 0 0 0 1.41-1.41zm-11.32-9.9l-1.41-1.41a1 1 0 0 0-1.41 1.41l1.41 1.41a1 1 0 0 0 1.41-1.41z",
       };
 
+      // State variables
       let lang = "en";
       let theme = "light";
+      let scheduleType = "weekly";
+      let selectedDays = [1, 2, 3, 4, 5]; // Mon-Fri default
+      let schedules = [
+        {
+          id: 1,
+          type: "weekly",
+          time: "09:00",
+          days: [1, 2, 3, 4, 5],
+          audio: "morning.mp3",
+        },
+        {
+          id: 2,
+          type: "special",
+          time: "16:00",
+          date: "2026-05-15",
+          audio: "evening.mp3",
+        },
+      ];
+      let audios = [];
       const API_BASE = "api.php?endpoint=";
 
+      // Dynamic Elements Map
+      const els = {
+        title: document.getElementById("txt-title"),
+        online: document.getElementById("txt-online"),
+        sysHeading: document.getElementById("txt-sysHeading"),
+        deviceState: document.getElementById("txt-deviceState"),
+        sysTime: document.getElementById("txt-sysTime"),
+        syncTime: document.getElementById("txt-syncTime"),
+        audioHeading: document.getElementById("txt-audioHeading"),
+        chooseAudio: document.getElementById("txt-chooseAudio"),
+        playBtn: document.getElementById("txt-playBtn"),
+        scheduleHeading: document.getElementById("txt-scheduleHeading"),
+        addSchedule: document.getElementById("txt-addSchedule"),
+        thTime: document.getElementById("txt-thTime"),
+        thDays: document.getElementById("txt-thDays"),
+        thAudio: document.getElementById("txt-thAudio"),
+        thAction: document.getElementById("txt-thAction"),
+        segWeekly: document.getElementById("seg-weekly"),
+        segSpecial: document.getElementById("seg-special"),
+        lblTime: document.getElementById("txt-lblTime"),
+        lblDays: document.getElementById("txt-lblDays"),
+        lblDate: document.getElementById("txt-lblDate"),
+        lblAudio: document.getElementById("txt-lblAudio"),
+        cancel: document.getElementById("txt-cancel"),
+        save: document.getElementById("txt-save"),
+        langBtn: document.getElementById("btn-lang"),
+        netStatus: document.getElementById("net-status"),
+      };
+
+      // Network Monitor
+      function updateNetwork() {
+        const online = navigator.onLine;
+        els.netStatus.className = online
+          ? "badge badge-success"
+          : "badge badge-danger";
+        els.online.innerText = online ? dict[lang].online : dict[lang].offline;
+      }
+      window.addEventListener("online", updateNetwork);
+      window.addEventListener("offline", updateNetwork);
+
+      // Language & Theme logic
       function toggleLang() {
         lang = lang === "en" ? "ne" : "en";
-        document.getElementById("lang-btn").innerText =
-          lang === "en" ? "NEP" : "ENG";
-        updateTexts();
+        els.langBtn.innerText = lang === "en" ? "NP" : "EN";
+        updateUIStrings();
+        renderDayPicker();
+        renderSchedules();
       }
 
       function toggleTheme() {
         theme = theme === "light" ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", theme);
         document
-          .getElementById("theme-path")
+          .getElementById("path-theme")
           .setAttribute("d", theme === "dark" ? icons.sun : icons.moon);
       }
 
-      function updateTexts() {
-        const keys = Object.keys(dict[lang]);
-        keys.forEach((k) => {
-          const el = document.getElementById(`t-${k}`);
-          if (el) {
-            if (el.tagName === "INPUT" && el.type === "button")
-              el.value = dict[lang][k];
-            else el.innerText = dict[lang][k];
+      function updateUIStrings() {
+        const d = dict[lang];
+        Object.keys(els).forEach((key) => {
+          if (
+            d[key] &&
+            els[key].tagName !== "DIV" &&
+            els[key].id !== "net-status" &&
+            els[key].id !== "btn-lang"
+          ) {
+            els[key].innerText = d[key];
           }
         });
-        updateNetworkStatus();
-        renderSchedule();
+        els.segWeekly.innerText = d.segWeekly;
+        els.segSpecial.innerText = d.segSpecial;
+        updateNetwork();
       }
 
-      function updateNetworkStatus() {
-        const isOnline = navigator.onLine;
-        const netEl = document.getElementById("net-status");
-        if (isOnline) {
-          netEl.innerText = dict[lang].netOnline;
-          netEl.className = "badge success";
-        } else {
-          netEl.innerText = dict[lang].netOffline;
-          netEl.className = "badge error";
-        }
-      }
-      window.addEventListener("online", updateNetworkStatus);
-      window.addEventListener("offline", updateNetworkStatus);
+      // Live Clock
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById("sys-time").innerText =
+          String(now.getHours()).padStart(2, "0") +
+          ":" +
+          String(now.getMinutes()).padStart(2, "0") +
+          ":" +
+          String(now.getSeconds()).padStart(2, "0");
+      }, 1000);
 
-      let schedule = [
-        { id: 1, time: "09:00", days: "MON-FRI", audio: "morning.mp3" },
-        { id: 2, time: "16:00", days: "MON-FRI", audio: "evening.mp3" },
-      ];
-      let audios = [];
-
+      // Data Fetching
       async function fetchStatus() {
         try {
           const res = await fetch(API_BASE + "status");
           const data = await res.json();
-          document.getElementById("sys-state").innerText = data.state;
-          document.getElementById("sys-time").innerText = data.time;
-        } catch (e) {
-          console.warn("Failed to fetch status");
-        }
+          const stateEl = document.getElementById("sys-state");
+          stateEl.innerText = data.state;
+          stateEl.className =
+            data.state === "RUNNING"
+              ? "badge badge-success"
+              : "badge badge-warning";
+        } catch (e) {}
       }
 
-      async function fetchAudioList() {
+      async function fetchAudio() {
         try {
           const res = await fetch(API_BASE + "audio_list");
           audios = await res.json();
-
-          const optHtml = audios
+          const opts = audios
             .map((a) => `<option value="${a}">${a}</option>`)
             .join("");
-          document.getElementById("audio-select").innerHTML = optHtml;
-          document.getElementById("new-audio").innerHTML = optHtml;
-        } catch (e) {
-          console.warn("Failed to fetch audio list");
-        }
+          document.getElementById("audio-select").innerHTML =
+            opts || '<option value="">Network Error</option>';
+          document.getElementById("inp-audio").innerHTML = opts;
+        } catch (e) {}
       }
 
-      function renderSchedule() {
-        const tbody = document.getElementById("schedule-body");
-        tbody.innerHTML = schedule
-          .map(
-            (s) => `
-                <tr>
-                    <td style="font-family: monospace; font-size: 1.1em; font-weight: bold;">${s.time}</td>
-                    <td>${s.days}</td>
-                    <td>${s.audio}</td>
-                    <td><button class="btn-danger" onclick="deleteSchedule(${s.id})">${dict[lang].deleteBtn}</button></td>
-                </tr>
-            `,
-          )
-          .join("");
-      }
-
+      // Sync Time
       async function syncTime() {
-        let timestamp;
-        // Timezone handle if online
+        let timestamp = Math.floor(Date.now() / 1000);
         if (navigator.onLine) {
-          // Get current time adjusted to GMT+5:45 (Kathmandu)
+          // Nepal is GMT+5:45 (20700 seconds)
           const d = new Date();
-          const localTime = d.getTime();
-          const localOffset = d.getTimezoneOffset() * 60000;
-          const utc = localTime + localOffset;
-          const offsetNepal = 5.75 * 3600000; // 5 hours 45 minutes
-          timestamp = Math.floor((utc + offsetNepal) / 1000);
-        } else {
-          timestamp = Math.floor(Date.now() / 1000);
+          const utc = d.getTime() + d.getTimezoneOffset() * 60000;
+          const nepalTime = new Date(utc + 3600000 * 5.75);
+          timestamp = Math.floor(nepalTime.getTime() / 1000);
+          alert("Nepal Time Sync Mode Activated. Timestamp: " + timestamp);
         }
-
         try {
           await fetch(API_BASE + "sync_time", {
             method: "POST",
             body: JSON.stringify({ timestamp }),
           });
-          alert("Time synced successfully.");
           fetchStatus();
         } catch (e) {
-          alert("Sync failed. Check device connection.");
+          alert("Failed to sync device.");
         }
       }
 
-      async function testAudio() {
-        const audio = document.getElementById("audio-select").value;
-        if (!audio) return;
-        alert("Sent play command: " + audio);
+      function testAudio() {
+        const val = document.getElementById("audio-select").value;
+        if (val) alert("Testing hardware audio: " + val);
       }
 
-      function deleteSchedule(id) {
-        if (confirm("Confirm delete?")) {
-          schedule = schedule.filter((s) => s.id !== id);
-          renderSchedule();
+      /* Modal & Form Logic */
+      const modalOverlay = document.getElementById("modalOverlay");
+
+      function openModal(editId = null) {
+        document.getElementById("txt-modalTitle").innerText = editId
+          ? dict[lang].modalTitleEdit
+          : dict[lang].modalTitleAdd;
+        document.getElementById("edit-id").value = editId || "";
+
+        if (editId) {
+          const s = schedules.find((x) => x.id === editId);
+          setScheduleType(s.type);
+          document.getElementById("inp-time").value = s.time;
+          document.getElementById("inp-audio").value = s.audio;
+          if (s.type === "weekly") selectedDays = [...s.days];
+          if (s.type === "special")
+            document.getElementById("inp-date").value = s.date;
+        } else {
+          setScheduleType("weekly");
+          document.getElementById("inp-time").value = "09:00";
+          selectedDays = [1, 2, 3, 4, 5];
+          document.getElementById("inp-date").value = "";
+        }
+        renderDayPicker();
+        modalOverlay.classList.add("active");
+      }
+
+      function closeModal() {
+        modalOverlay.classList.remove("active");
+      }
+      function handleOverlayClick(e) {
+        if (e.target === modalOverlay) closeModal();
+      }
+
+      function setScheduleType(type) {
+        scheduleType = type;
+        if (type === "weekly") {
+          els.segWeekly.classList.add("active");
+          els.segSpecial.classList.remove("active");
+          document.getElementById("group-days").classList.remove("hidden");
+          document.getElementById("group-date").classList.add("hidden");
+          document.getElementById("inp-date").removeAttribute("required");
+        } else {
+          els.segSpecial.classList.add("active");
+          els.segWeekly.classList.remove("active");
+          document.getElementById("group-date").classList.remove("hidden");
+          document.getElementById("group-days").classList.add("hidden");
+          document.getElementById("inp-date").setAttribute("required", "true");
         }
       }
 
+      function renderDayPicker() {
+        const picker = document.getElementById("day-picker");
+        picker.innerHTML = dict[lang].daysShort
+          .map(
+            (day, idx) => `
+                <div class="day-chip ${selectedDays.includes(idx) ? "active" : ""}" onclick="toggleDay(${idx})">
+                    ${day}
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function toggleDay(idx) {
+        if (selectedDays.includes(idx))
+          selectedDays = selectedDays.filter((d) => d !== idx);
+        else selectedDays.push(idx);
+        selectedDays.sort();
+        renderDayPicker();
+      }
+
+      // Save Schedule
       document
-        .getElementById("add-schedule-form")
-        .addEventListener("submit", (e) => {
+        .getElementById("schedule-form")
+        .addEventListener("submit", async (e) => {
           e.preventDefault();
-          const time = document.getElementById("new-time").value;
-          const days = document.getElementById("new-days").value;
-          const audio = document.getElementById("new-audio").value;
-          schedule.push({
-            id: Date.now(),
-            time,
-            days,
-            audio: audio || "bell.mp3",
-          });
+          if (scheduleType === "weekly" && selectedDays.length === 0) {
+            alert("Please select at least one active day.");
+            return;
+          }
+          const idVal = document.getElementById("edit-id").value;
+          const newSchedule = {
+            id: idVal ? parseInt(idVal) : Date.now(),
+            type: scheduleType,
+            time: document.getElementById("inp-time").value,
+            audio: document.getElementById("inp-audio").value,
+          };
+          if (scheduleType === "weekly") newSchedule.days = [...selectedDays];
+          else newSchedule.date = document.getElementById("inp-date").value;
 
-          // Sort by time
-          schedule.sort((a, b) => a.time.localeCompare(b.time));
-          renderSchedule();
+          if (idVal) {
+            const idx = schedules.findIndex((x) => x.id === parseInt(idVal));
+            schedules[idx] = newSchedule;
+          } else {
+            schedules.push(newSchedule);
+          }
+
+          // Re-order sorting by time
+          schedules.sort((a, b) => a.time.localeCompare(b.time));
+
+          // Mock API saving
+          try {
+            await fetch(API_BASE + "schedule", {
+              method: "POST",
+              body: JSON.stringify(schedules),
+            });
+          } catch (err) {}
+          closeModal();
+          renderSchedules();
         });
 
-      // Initialize
-      updateNetworkStatus();
-      updateTexts();
+      function deleteSchedule(id) {
+        if (confirm("Remove schedule?")) {
+          schedules = schedules.filter((s) => s.id !== id);
+          renderSchedules();
+        }
+      }
+
+      // Render List
+      function formatDays(daysArray) {
+        if (daysArray.length === 7) return dict[lang].segWeekly + " (All)";
+        if (
+          daysArray.length === 5 &&
+          daysArray.includes(1) &&
+          daysArray.includes(5) &&
+          !daysArray.includes(0) &&
+          !daysArray.includes(6)
+        )
+          return "Mon - Fri";
+        return daysArray.map((d) => dict[lang].daysShort[d]).join(", ");
+      }
+
+      function renderSchedules() {
+        const tbody = document.getElementById("schedule-body");
+        tbody.innerHTML = schedules
+          .map((s) => {
+            const scheduleString =
+              s.type === "weekly"
+                ? formatDays(s.days)
+                : `<span style="color:var(--primary); font-weight:600">${dict[lang].specialPrefix}${s.date}</span>`;
+            return `
+                <tr>
+                    <td class="time-col">${s.time}</td>
+                    <td>${scheduleString}</td>
+                    <td><span style="background:var(--bg-color); padding: 4px 8px; border-radius:4px; font-size:13px; border:1px solid var(--border-color);">${s.audio}</span></td>
+                    <td style="text-align: right;">
+                        <button class="btn-icon" style="display:inline-flex; width:34px; height:34px; margin-right:6px;" onclick="openModal(${s.id})" title="${dict[lang].edit}">
+                            <svg class="icon" style="width:16px; height:16px;" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 10.18l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </button>
+                        <button class="btn-icon" style="display:inline-flex; width:34px; height:34px; color:var(--danger); border-color:var(--danger);" onclick="deleteSchedule(${s.id})" title="${dict[lang].delete}">
+                            <svg class="icon" style="width:16px; height:16px;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </button>
+                    </td>
+                </tr>
+            `;
+          })
+          .join("");
+      }
+
+      // Init App run
+      updateUIStrings();
+      renderDayPicker();
+      fetchAudio().then(renderSchedules);
       fetchStatus();
-      fetchAudioList();
-      renderSchedule();
-      setInterval(fetchStatus, 5000);
     </script>
   </body>
 </html>
