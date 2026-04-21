@@ -528,28 +528,33 @@
   <body>
     <main class="layout">
       <header class="hero">
-        <span class="eyebrow">Portfolio Theme Lab</span>
-        <h1>Professional Color Palettes for Portfolio Websites</h1>
+        <span class="eyebrow">
+          <i class="fa-duotone fa-palette" aria-hidden="true"></i>
+          <span>Portfolio Theme Lab</span>
+        </span>
+        <h1>Sharp Minimal Theme System for Portfolio Websites</h1>
         <p class="lead">
-          These themes are curated for real portfolio UI work: balanced
-          neutrals, readable text contrast, and accent colors that feel premium
-          instead of random.
+          Flat surfaces, strict edges, and balanced professional palettes.
+          Handcrafted visual rhythm with no soft corners and no generic AI look.
         </p>
 
         <div class="toolbar">
-          <div class="search-wrap">
+          <label class="search-wrap" for="searchInput">
+            <i class="fa-duotone fa-magnifying-glass" aria-hidden="true"></i>
             <input
               id="searchInput"
               type="search"
-              placeholder="Search by name, style, or color hex"
+              placeholder="search by name, style, or hex"
               aria-label="Search themes"
             />
-          </div>
+          </label>
           <button class="btn secondary" id="shuffleBtn" type="button">
-            Pick Random Theme
+            <i class="fa-duotone fa-shuffle" aria-hidden="true"></i>
+            <span>Random Theme</span>
           </button>
           <button class="btn" id="copyActiveBtn" type="button">
-            Copy Active CSS Variables
+            <i class="fa-duotone fa-copy" aria-hidden="true"></i>
+            <span>Copy Active CSS</span>
           </button>
         </div>
       </header>
@@ -558,12 +563,21 @@
         <aside class="preview">
           <div class="preview-window" id="previewWindow">
             <div class="preview-nav">
-              <div class="preview-brand">Ari Matson</div>
-              <span class="preview-badge" id="previewTag">Modern SaaS</span>
+              <div class="preview-brand">
+                <i class="fa-duotone fa-briefcase" aria-hidden="true"></i>
+                <span>Ari Matson</span>
+              </div>
+              <div class="preview-badge">
+                <i class="fa-duotone fa-layer-group" aria-hidden="true"></i>
+                <span id="previewTag">Modern SaaS</span>
+              </div>
             </div>
 
             <div class="preview-hero">
-              <p class="preview-kicker">Selected Theme</p>
+              <p class="preview-kicker">
+                <i class="fa-duotone fa-star" aria-hidden="true"></i>
+                <span>Selected Theme</span>
+              </p>
               <h2 id="previewTitle">Graphite + Electric Blue</h2>
               <p id="previewDescription">
                 Confident dark base with sharp blue accents for product-focused
@@ -572,25 +586,40 @@
             </div>
 
             <div class="preview-cta">
-              <button class="cta-primary" type="button">View Projects</button>
-              <button class="cta-ghost" type="button">About Me</button>
+              <button class="cta-primary" type="button">
+                <i
+                  class="fa-duotone fa-arrow-up-right-from-square"
+                  aria-hidden="true"
+                ></i>
+                <span>View Projects</span>
+              </button>
+              <button class="cta-ghost" type="button">
+                <i class="fa-duotone fa-user" aria-hidden="true"></i>
+                <span>About Me</span>
+              </button>
             </div>
 
             <div class="preview-card">
               <p>
-                Frontend systems, product UI, and brand-ready websites for
-                startups and agencies.
+                <i class="fa-duotone fa-code" aria-hidden="true"></i>
+                <span>
+                  Frontend systems, product UI, and brand-ready websites for
+                  startups and agencies.
+                </span>
               </p>
               <div class="stats">
                 <div class="stat">
+                  <i class="fa-duotone fa-chart-column" aria-hidden="true"></i>
                   <strong>32</strong>
                   <span>Projects</span>
                 </div>
                 <div class="stat">
+                  <i class="fa-duotone fa-award" aria-hidden="true"></i>
                   <strong>11</strong>
                   <span>Awards</span>
                 </div>
                 <div class="stat">
+                  <i class="fa-duotone fa-clock" aria-hidden="true"></i>
                   <strong>9yr</strong>
                   <span>Experience</span>
                 </div>
@@ -602,10 +631,19 @@
         <section class="palette-panel">
           <div class="panel-top">
             <div>
-              <h3>Theme Options</h3>
-              <p>Click any palette to apply it in the live preview.</p>
+              <h3>
+                <i class="fa-duotone fa-filter" aria-hidden="true"></i>
+                <span>Theme Options</span>
+              </h3>
+              <p>
+                <i class="fa-duotone fa-circle-info" aria-hidden="true"></i>
+                <span>Click any palette to apply it in the live preview.</span>
+              </p>
             </div>
-            <div class="count" id="paletteCount">0 themes</div>
+            <div class="count">
+              <i class="fa-duotone fa-layer-group" aria-hidden="true"></i>
+              <span id="paletteCount">0 themes</span>
+            </div>
           </div>
 
           <div class="grid" id="paletteGrid" aria-live="polite"></div>
@@ -613,6 +651,7 @@
       </section>
     </main>
 
+    <script src="https://zenithkandel.com.np/fontawesome/zenith-icons.js"></script>
     <script>
       const palettes = [
         {
@@ -964,6 +1003,7 @@
       const previewTitle = document.getElementById("previewTitle");
       const previewDescription = document.getElementById("previewDescription");
       const previewTag = document.getElementById("previewTag");
+      const activeCopyDefaultHtml = copyActiveBtn.innerHTML;
 
       let activePalette = palettes[0];
       let filteredPalettes = [...palettes];
@@ -1069,11 +1109,23 @@
 
         const name = document.createElement("h4");
         name.className = "card-name";
-        name.textContent = palette.name;
+        const nameIcon = document.createElement("i");
+        nameIcon.className = "fa-duotone fa-palette";
+        nameIcon.setAttribute("aria-hidden", "true");
+        const nameText = document.createElement("span");
+        nameText.textContent = palette.name;
+        name.appendChild(nameIcon);
+        name.appendChild(nameText);
 
         const meta = document.createElement("p");
         meta.className = "card-meta";
-        meta.textContent = palette.style;
+        const metaIcon = document.createElement("i");
+        metaIcon.className = "fa-duotone fa-layer-group";
+        metaIcon.setAttribute("aria-hidden", "true");
+        const metaText = document.createElement("span");
+        metaText.textContent = palette.style;
+        meta.appendChild(metaIcon);
+        meta.appendChild(metaText);
 
         const hexRow = document.createElement("div");
         hexRow.className = "hex-row";
@@ -1092,12 +1144,15 @@
         const applyBtn = document.createElement("button");
         applyBtn.className = "mini-btn";
         applyBtn.type = "button";
-        applyBtn.textContent = "Apply";
+        applyBtn.innerHTML =
+          '<i class="fa-duotone fa-bolt" aria-hidden="true"></i><span>Apply</span>';
 
         const copyBtn = document.createElement("button");
         copyBtn.className = "mini-btn";
         copyBtn.type = "button";
-        copyBtn.textContent = "Copy CSS";
+        const copyDefaultHtml =
+          '<i class="fa-duotone fa-file-code" aria-hidden="true"></i><span>Copy CSS</span>';
+        copyBtn.innerHTML = copyDefaultHtml;
 
         card.addEventListener("click", function () {
           applyPalette(palette);
@@ -1113,9 +1168,10 @@
         copyBtn.addEventListener("click", function (event) {
           event.stopPropagation();
           copyText(getCssVariables(palette), function () {
-            copyBtn.textContent = "Copied";
+            copyBtn.innerHTML =
+              '<i class="fa-duotone fa-check" aria-hidden="true"></i><span>Copied</span>';
             window.setTimeout(function () {
-              copyBtn.textContent = "Copy CSS";
+              copyBtn.innerHTML = copyDefaultHtml;
             }, 1000);
           });
         });
@@ -1138,7 +1194,8 @@
         if (!list.length) {
           const empty = document.createElement("div");
           empty.className = "empty-state";
-          empty.textContent = "No themes found. Try another search term.";
+          empty.innerHTML =
+            '<i class="fa-duotone fa-circle-info" aria-hidden="true"></i><p>No themes found. Try another search term.</p>';
           paletteGrid.appendChild(empty);
           paletteCount.textContent = "0 themes";
           return;
@@ -1209,10 +1266,10 @@
 
       copyActiveBtn.addEventListener("click", function () {
         copyText(getCssVariables(activePalette), function () {
-          const original = copyActiveBtn.textContent;
-          copyActiveBtn.textContent = "Copied Active Theme";
+          copyActiveBtn.innerHTML =
+            '<i class="fa-duotone fa-check" aria-hidden="true"></i><span>Copied</span>';
           window.setTimeout(function () {
-            copyActiveBtn.textContent = original;
+            copyActiveBtn.innerHTML = activeCopyDefaultHtml;
           }, 1200);
         });
       });
