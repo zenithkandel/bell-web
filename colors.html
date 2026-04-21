@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Theme Palette Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --page-bg: #ece9e3;
+        --ink: #111827;
+        --muted: #4b5563;
+        --focus: #2563eb;
+        --preview-bg: #0b1220;
+        --preview-surface: #121a2b;
+        --preview-text: #e6edf8;
+        --preview-accent: #3b82f6;
+        --preview-accent-soft: #22d3ee;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Manrope", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(255, 255, 255, 0.75),
+            transparent 42%
+          ),
+          radial-gradient(
+            circle at 90% 12%,
+            rgba(121, 139, 255, 0.15),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(14, 165, 233, 0.1),
+            transparent 40%
+          ),
+          linear-gradient(160deg, #f3f1ec 0%, #e6e3db 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.45;
+        background-image:
+          linear-gradient(120deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+          linear-gradient(30deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+        background-size:
+          38px 38px,
+          38px 38px;
+      }
+
+      .layout {
+        width: min(1220px, 100%);
+        margin: 0 auto;
+        padding: 40px 22px 56px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #0f172a;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(15, 23, 42, 0.1);
+      }
+
+      h1 {
+        font-family: "Sora", sans-serif;
+        font-size: clamp(1.7rem, 3vw, 2.55rem);
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+      }
+
+      .lead {
+        max-width: 72ch;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 11px;
+      }
+
+      .search-wrap {
+        flex: 1 1 320px;
+        min-width: 220px;
+      }
+
+      .search-wrap input {
+        width: 100%;
+        border: 1px solid rgba(15, 23, 42, 0.16);
+        background: rgba(255, 255, 255, 0.86);
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14px;
+        color: #0f172a;
+        transition: border-color 0.22s ease;
+      }
+
+      .search-wrap input:focus {
+        outline: none;
+        border-color: var(--focus);
+      }
+
+      .btn {
+        border: none;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        background: #111827;
+        color: #f9fafb;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          background-color 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 16px rgba(15, 23, 42, 0.2);
+      }
+
+      .btn.secondary {
+        background: #f8fafc;
+        color: #111827;
+        border: 1px solid rgba(15, 23, 42, 0.15);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .preview {
+        position: sticky;
+        top: 20px;
+        border-radius: 22px;
+        padding: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        background: linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.88),
+          rgba(248, 250, 252, 0.74)
+        );
+        backdrop-filter: blur(8px);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      .preview-window {
+        min-height: 430px;
+        border-radius: 16px;
+        padding: 16px;
+        color: var(--preview-text);
+        background: var(--preview-bg);
+        transition:
+          background-color 0.32s ease,
+          color 0.32s ease;
+      }
+
+      .preview-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+
+      .preview-brand {
+        font-family: "Sora", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.03em;
+      }
+
+      .preview-badge {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        padding: 6px 9px;
+        border-radius: 999px;
+        color: var(--preview-bg);
+        background: var(--preview-accent-soft);
+      }
+
+      .preview-kicker {
+        font-size: 12px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+        opacity: 0.9;
+      }
+
+      .preview-hero h2 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.42rem;
+        margin-bottom: 10px;
+        line-height: 1.25;
+      }
+
+      .preview-hero p {
+        font-size: 14px;
+        line-height: 1.6;
+        opacity: 0.95;
+      }
+
+      .preview-cta {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .cta-primary,
+      .cta-ghost {
+        font-family: "Sora", sans-serif;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid transparent;
+      }
+
+      .cta-primary {
+        color: #ffffff;
+        background: var(--preview-accent);
+      }
+
+      .cta-ghost {
+        color: var(--preview-text);
+        background: transparent;
+        border-color: rgba(148, 163, 184, 0.44);
+      }
+
+      .preview-card {
+        margin-top: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: var(--preview-surface);
+        padding: 13px;
+      }
+
+      .preview-card p {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .stats {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .stat {
+        border-radius: 9px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        padding: 8px;
+        text-align: center;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 3px;
+      }
+
+      .stat span {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .palette-panel {
+        border-radius: 22px;
+        padding: 16px;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        background: rgba(255, 255, 255, 0.67);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
+      }
+
+      .panel-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .panel-top h3 {
+        font-family: "Sora", sans-serif;
+        font-size: 1.2rem;
+        margin-bottom: 3px;
+      }
+
+      .panel-top p {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .count {
+        white-space: nowrap;
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        background: #ffffff;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+        opacity: 0;
+        transform: translateY(16px);
+        animation: card-rise 0.45s ease forwards;
+        animation-delay: calc(var(--order, 0) * 32ms);
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 22px rgba(15, 23, 42, 0.14);
+      }
+
+      .card.active {
+        border-color: var(--focus);
+        box-shadow:
+          0 0 0 2px rgba(37, 99, 235, 0.18),
+          0 14px 24px rgba(15, 23, 42, 0.16);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        height: 86px;
+      }
+
+      .card-body {
+        padding: 11px;
+      }
+
+      .card-name {
+        font-family: "Sora", sans-serif;
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .card-meta {
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .hex-row {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+      }
+
+      .hex {
+        border-radius: 7px;
+        background: #f3f4f6;
+        padding: 4px 2px;
+        text-align: center;
+        font-size: 10px;
+        font-weight: 800;
+        color: #334155;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 7px;
+        margin-top: 10px;
+      }
+
+      .mini-btn {
+        flex: 1;
+        border: 1px solid rgba(15, 23, 42, 0.16);
+        border-radius: 8px;
+        background: #ffffff;
+        font-size: 11px;
+        font-weight: 700;
+        color: #0f172a;
+        padding: 7px;
+        cursor: pointer;
+      }
+
+      .mini-btn:hover {
+        background: #f8fafc;
+      }
+
+      .empty-state {
+        border: 1px dashed rgba(71, 85, 105, 0.35);
+        border-radius: 14px;
+        padding: 22px;
+        text-align: center;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      @keyframes card-rise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .preview {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .layout {
+          padding: 26px 14px 40px;
+        }
+
+        .btn,
+        .search-wrap input {
+          width: 100%;
+        }
+
+        .preview,
+        .palette-panel {
+          border-radius: 18px;
+        }
+
+        .swatches {
+          height: 78px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="layout">
+      <header class="hero">
+        <span class="eyebrow">Portfolio Theme Lab</span>
+        <h1>Professional Color Palettes for Portfolio Websites</h1>
+        <p class="lead">
+          These themes are curated for real portfolio UI work: balanced
+          neutrals, readable text contrast, and accent colors that feel premium
+          instead of random.
+        </p>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search by name, style, or color hex"
+              aria-label="Search themes"
+            />
+          </div>
+          <button class="btn secondary" id="shuffleBtn" type="button">
+            Pick Random Theme
+          </button>
+          <button class="btn" id="copyActiveBtn" type="button">
+            Copy Active CSS Variables
+          </button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="preview">
+          <div class="preview-window" id="previewWindow">
+            <div class="preview-nav">
+              <div class="preview-brand">Ari Matson</div>
+              <span class="preview-badge" id="previewTag">Modern SaaS</span>
+            </div>
+
+            <div class="preview-hero">
+              <p class="preview-kicker">Selected Theme</p>
+              <h2 id="previewTitle">Graphite + Electric Blue</h2>
+              <p id="previewDescription">
+                Confident dark base with sharp blue accents for product-focused
+                portfolios.
+              </p>
+            </div>
+
+            <div class="preview-cta">
+              <button class="cta-primary" type="button">View Projects</button>
+              <button class="cta-ghost" type="button">About Me</button>
+            </div>
+
+            <div class="preview-card">
+              <p>
+                Frontend systems, product UI, and brand-ready websites for
+                startups and agencies.
+              </p>
+              <div class="stats">
+                <div class="stat">
+                  <strong>32</strong>
+                  <span>Projects</span>
+                </div>
+                <div class="stat">
+                  <strong>11</strong>
+                  <span>Awards</span>
+                </div>
+                <div class="stat">
+                  <strong>9yr</strong>
+                  <span>Experience</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="palette-panel">
+          <div class="panel-top">
+            <div>
+              <h3>Theme Options</h3>
+              <p>Click any palette to apply it in the live preview.</p>
+            </div>
+            <div class="count" id="paletteCount">0 themes</div>
+          </div>
+
+          <div class="grid" id="paletteGrid" aria-live="polite"></div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const palettes = [
+        {
+          id: "graphite-electric-blue",
+          name: "Graphite + Electric Blue",
+          style: "Modern SaaS",
+          description:
+            "Confident dark base with sharp blue accents for product-focused portfolios.",
+          colors: {
+            bg: "#0B1220",
+            surface: "#121A2B",
+            text: "#E6EDF8",
+            accent: "#3B82F6",
+            accentSoft: "#22D3EE",
+          },
+        },
+        {
+          id: "ivory-ink-teal",
+          name: "Ivory + Ink + Teal",
+          style: "Minimal Editorial",
+          description:
+            "Light and premium, with teal highlights for elegant personal-brand sites.",
+          colors: {
+            bg: "#F8F6F2",
+            surface: "#FFFFFF",
+            text: "#1F2937",
+            accent: "#0F766E",
+            accentSoft: "#D97706",
+          },
+        },
+        {
+          id: "midnight-teal-signal",
+          name: "Midnight Teal Signal",
+          style: "Creative Studio",
+          description:
+            "Deep navy mood with cool accents that keep interfaces modern and sharp.",
+          colors: {
+            bg: "#0A1022",
+            surface: "#131B33",
+            text: "#DCE7FF",
+            accent: "#14B8A6",
+            accentSoft: "#38BDF8",
+          },
+        },
+        {
+          id: "sandstone-indigo",
+          name: "Sandstone + Indigo",
+          style: "Brand Portfolio",
+          description:
+            "Warm neutral canvas paired with rich indigo for trust and clarity.",
+          colors: {
+            bg: "#F4EFE7",
+            surface: "#FFFFFF",
+            text: "#2A2724",
+            accent: "#3730A3",
+            accentSoft: "#C2410C",
+          },
+        },
+        {
+          id: "navy-coral",
+          name: "Navy + Coral",
+          style: "Agency Bold",
+          description:
+            "Reliable dark navy and vibrant coral for high-energy showcase pages.",
+          colors: {
+            bg: "#111827",
+            surface: "#1F2937",
+            text: "#F3F4F6",
+            accent: "#F97316",
+            accentSoft: "#06B6D4",
+          },
+        },
+        {
+          id: "slate-lime",
+          name: "Slate + Lime",
+          style: "Tech Portfolio",
+          description:
+            "Crisp slate tones with lime highlights for developer-forward identities.",
+          colors: {
+            bg: "#0F172A",
+            surface: "#1E293B",
+            text: "#E2E8F0",
+            accent: "#84CC16",
+            accentSoft: "#F59E0B",
+          },
+        },
+        {
+          id: "pearl-cobalt",
+          name: "Pearl + Cobalt",
+          style: "Corporate Clean",
+          description:
+            "High-legibility light system with a confident cobalt call-to-action color.",
+          colors: {
+            bg: "#F5F7FB",
+            surface: "#FFFFFF",
+            text: "#1E293B",
+            accent: "#1D4ED8",
+            accentSoft: "#0EA5E9",
+          },
+        },
+        {
+          id: "forest-copper",
+          name: "Forest + Copper",
+          style: "Crafted Premium",
+          description:
+            "Organic dark greens plus copper accents for handcrafted creative portfolios.",
+          colors: {
+            bg: "#0D1B16",
+            surface: "#14261F",
+            text: "#D9F2E7",
+            accent: "#B45309",
+            accentSoft: "#10B981",
+          },
+        },
+        {
+          id: "charcoal-amber",
+          name: "Charcoal + Amber",
+          style: "Industrial Chic",
+          description:
+            "Strong monochrome base with warm amber highlights for bold presentation.",
+          colors: {
+            bg: "#111111",
+            surface: "#1B1B1B",
+            text: "#F5F5F5",
+            accent: "#F59E0B",
+            accentSoft: "#FB923C",
+          },
+        },
+        {
+          id: "sand-ocean",
+          name: "Sand + Ocean",
+          style: "Calm Professional",
+          description:
+            "Soft warm neutrals balanced by oceanic blues for approachable portfolios.",
+          colors: {
+            bg: "#F4EFE6",
+            surface: "#FFFFFF",
+            text: "#223042",
+            accent: "#0369A1",
+            accentSoft: "#0EA5E9",
+          },
+        },
+        {
+          id: "eclipse-mint",
+          name: "Eclipse + Mint",
+          style: "UI Specialist",
+          description:
+            "Dark UI palette with mint tones that read clearly on modern dashboards.",
+          colors: {
+            bg: "#13151D",
+            surface: "#1D2330",
+            text: "#EAF2FF",
+            accent: "#34D399",
+            accentSoft: "#22C55E",
+          },
+        },
+        {
+          id: "cloud-rosewood",
+          name: "Cloud + Rosewood",
+          style: "Designer Personal",
+          description:
+            "Light airy base with refined rosewood accents for elegant storytelling.",
+          colors: {
+            bg: "#FAF7F5",
+            surface: "#FFFFFF",
+            text: "#2D2A28",
+            accent: "#9F1239",
+            accentSoft: "#C2410C",
+          },
+        },
+        {
+          id: "titanium-aqua",
+          name: "Titanium + Aqua",
+          style: "Product Design",
+          description:
+            "Technical dark tones with clean aqua signals for digital product work.",
+          colors: {
+            bg: "#0A1623",
+            surface: "#122338",
+            text: "#DCEBFA",
+            accent: "#06B6D4",
+            accentSoft: "#3B82F6",
+          },
+        },
+        {
+          id: "linen-olive",
+          name: "Linen + Olive",
+          style: "Lifestyle Portfolio",
+          description:
+            "Subtle linen hues and olive accents for warm and human visual identity.",
+          colors: {
+            bg: "#F7F4EA",
+            surface: "#FFFDF7",
+            text: "#2F342A",
+            accent: "#4D7C0F",
+            accentSoft: "#A16207",
+          },
+        },
+        {
+          id: "indigo-studio",
+          name: "Indigo Studio",
+          style: "Digital Creator",
+          description:
+            "Indigo-led theme with bright cyan support for interactive portfolios.",
+          colors: {
+            bg: "#10162F",
+            surface: "#1A2450",
+            text: "#E8ECFF",
+            accent: "#6366F1",
+            accentSoft: "#22D3EE",
+          },
+        },
+        {
+          id: "concrete-vermilion",
+          name: "Concrete + Vermilion",
+          style: "Consulting Profile",
+          description:
+            "Neutral grayscale structure with strategic vermilion emphasis.",
+          colors: {
+            bg: "#F3F4F6",
+            surface: "#FFFFFF",
+            text: "#1F2937",
+            accent: "#EA580C",
+            accentSoft: "#0284C7",
+          },
+        },
+        {
+          id: "onyx-gold",
+          name: "Onyx + Gold",
+          style: "Luxury Creative",
+          description:
+            "High-contrast onyx palette elevated by premium gold accents.",
+          colors: {
+            bg: "#0C0A09",
+            surface: "#1C1917",
+            text: "#FAFAF9",
+            accent: "#EAB308",
+            accentSoft: "#F97316",
+          },
+        },
+        {
+          id: "mist-jade",
+          name: "Mist + Jade",
+          style: "Wellness Professional",
+          description:
+            "Soft mist neutrals with deep jade for calm and trustworthy branding.",
+          colors: {
+            bg: "#EEF4F2",
+            surface: "#FFFFFF",
+            text: "#1F2937",
+            accent: "#0F766E",
+            accentSoft: "#16A34A",
+          },
+        },
+        {
+          id: "burgundy-editorial",
+          name: "Burgundy Editorial",
+          style: "Art Direction",
+          description:
+            "Rich burgundy tones designed for portfolios with strong visual narrative.",
+          colors: {
+            bg: "#1A0F15",
+            surface: "#291621",
+            text: "#FCEFF6",
+            accent: "#BE185D",
+            accentSoft: "#F59E0B",
+          },
+        },
+        {
+          id: "nordic-blue",
+          name: "Nordic Blue",
+          style: "UX Portfolio",
+          description:
+            "Crisp, cool palette with disciplined blues for product and UX storytelling.",
+          colors: {
+            bg: "#EAF2FA",
+            surface: "#FFFFFF",
+            text: "#12263A",
+            accent: "#2563EB",
+            accentSoft: "#0891B2",
+          },
+        },
+        {
+          id: "monochrome-pro",
+          name: "Monochrome Pro",
+          style: "Typography First",
+          description:
+            "A disciplined grayscale system where hierarchy comes from spacing and type.",
+          colors: {
+            bg: "#121212",
+            surface: "#1F1F1F",
+            text: "#F4F4F5",
+            accent: "#A1A1AA",
+            accentSoft: "#52525B",
+          },
+        },
+        {
+          id: "warm-clay",
+          name: "Warm Clay",
+          style: "Freelance Portfolio",
+          description:
+            "Comforting earth tones that feel personal while remaining professional.",
+          colors: {
+            bg: "#F8F1EC",
+            surface: "#FFF8F3",
+            text: "#372B25",
+            accent: "#C2410C",
+            accentSoft: "#7C2D12",
+          },
+        },
+        {
+          id: "pine-sky",
+          name: "Pine + Sky",
+          style: "Outdoor Brand",
+          description:
+            "Natural pine depth with cool sky accents for adventurous creative identity.",
+          colors: {
+            bg: "#102017",
+            surface: "#1A2E23",
+            text: "#E7F5EE",
+            accent: "#2DD4BF",
+            accentSoft: "#38BDF8",
+          },
+        },
+        {
+          id: "editorial-ink",
+          name: "Editorial Ink",
+          style: "Writer Portfolio",
+          description:
+            "Classic black-and-paper scheme with subtle neutral accents for content-led sites.",
+          colors: {
+            bg: "#FCFCFA",
+            surface: "#FFFFFF",
+            text: "#111827",
+            accent: "#0F172A",
+            accentSoft: "#6B7280",
+          },
+        },
+      ];
+
+      const roleKeys = ["bg", "surface", "text", "accent", "accentSoft"];
+      const roleLabels = ["BG", "Surface", "Text", "Accent", "Accent 2"];
+
+      const paletteGrid = document.getElementById("paletteGrid");
+      const paletteCount = document.getElementById("paletteCount");
+      const searchInput = document.getElementById("searchInput");
+      const shuffleBtn = document.getElementById("shuffleBtn");
+      const copyActiveBtn = document.getElementById("copyActiveBtn");
+      const previewTitle = document.getElementById("previewTitle");
+      const previewDescription = document.getElementById("previewDescription");
+      const previewTag = document.getElementById("previewTag");
+
+      let activePalette = palettes[0];
+      let filteredPalettes = [...palettes];
+
+      function getCssVariables(palette) {
+        return [
+          ":root {",
+          "  --theme-bg: " + palette.colors.bg + ";",
+          "  --theme-surface: " + palette.colors.surface + ";",
+          "  --theme-text: " + palette.colors.text + ";",
+          "  --theme-accent: " + palette.colors.accent + ";",
+          "  --theme-accent-soft: " + palette.colors.accentSoft + ";",
+          "}",
+        ].join("\n");
+      }
+
+      function applyPalette(palette) {
+        activePalette = palette;
+        document.documentElement.style.setProperty(
+          "--preview-bg",
+          palette.colors.bg,
+        );
+        document.documentElement.style.setProperty(
+          "--preview-surface",
+          palette.colors.surface,
+        );
+        document.documentElement.style.setProperty(
+          "--preview-text",
+          palette.colors.text,
+        );
+        document.documentElement.style.setProperty(
+          "--preview-accent",
+          palette.colors.accent,
+        );
+        document.documentElement.style.setProperty(
+          "--preview-accent-soft",
+          palette.colors.accentSoft,
+        );
+        document.documentElement.style.setProperty(
+          "--focus",
+          palette.colors.accent,
+        );
+
+        previewTitle.textContent = palette.name;
+        previewDescription.textContent = palette.description;
+        previewTag.textContent = palette.style;
+      }
+
+      function setActiveCard(card) {
+        const current = paletteGrid.querySelector(".card.active");
+        if (current) {
+          current.classList.remove("active");
+        }
+        if (card) {
+          card.classList.add("active");
+        }
+      }
+
+      function copyText(text, onDone) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(text)
+            .then(onDone)
+            .catch(function () {
+              fallbackCopy(text, onDone);
+            });
+          return;
+        }
+        fallbackCopy(text, onDone);
+      }
+
+      function fallbackCopy(text, onDone) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "readonly");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        onDone();
+      }
+
+      function createCard(palette, index) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.dataset.id = palette.id;
+        card.style.setProperty("--order", String(index));
+
+        const swatches = document.createElement("div");
+        swatches.className = "swatches";
+
+        roleKeys.forEach(function (key) {
+          const swatch = document.createElement("div");
+          swatch.className = "swatch";
+          swatch.style.background = palette.colors[key];
+          swatches.appendChild(swatch);
+        });
+
+        const body = document.createElement("div");
+        body.className = "card-body";
+
+        const name = document.createElement("h4");
+        name.className = "card-name";
+        name.textContent = palette.name;
+
+        const meta = document.createElement("p");
+        meta.className = "card-meta";
+        meta.textContent = palette.style;
+
+        const hexRow = document.createElement("div");
+        hexRow.className = "hex-row";
+
+        roleKeys.forEach(function (key, roleIndex) {
+          const hex = document.createElement("span");
+          hex.className = "hex";
+          hex.title = roleLabels[roleIndex];
+          hex.textContent = palette.colors[key].toUpperCase();
+          hexRow.appendChild(hex);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const applyBtn = document.createElement("button");
+        applyBtn.className = "mini-btn";
+        applyBtn.type = "button";
+        applyBtn.textContent = "Apply";
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "mini-btn";
+        copyBtn.type = "button";
+        copyBtn.textContent = "Copy CSS";
+
+        card.addEventListener("click", function () {
+          applyPalette(palette);
+          setActiveCard(card);
+        });
+
+        applyBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          applyPalette(palette);
+          setActiveCard(card);
+        });
+
+        copyBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          copyText(getCssVariables(palette), function () {
+            copyBtn.textContent = "Copied";
+            window.setTimeout(function () {
+              copyBtn.textContent = "Copy CSS";
+            }, 1000);
+          });
+        });
+
+        actions.appendChild(applyBtn);
+        actions.appendChild(copyBtn);
+        body.appendChild(name);
+        body.appendChild(meta);
+        body.appendChild(hexRow);
+        body.appendChild(actions);
+        card.appendChild(swatches);
+        card.appendChild(body);
+
+        return card;
+      }
+
+      function renderCards(list) {
+        paletteGrid.innerHTML = "";
+
+        if (!list.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty-state";
+          empty.textContent = "No themes found. Try another search term.";
+          paletteGrid.appendChild(empty);
+          paletteCount.textContent = "0 themes";
+          return;
+        }
+
+        list.forEach(function (palette, index) {
+          paletteGrid.appendChild(createCard(palette, index));
+        });
+
+        paletteCount.textContent =
+          list.length + (list.length === 1 ? " theme" : " themes");
+
+        const activeCard = paletteGrid.querySelector(
+          '[data-id="' + activePalette.id + '"]',
+        );
+        if (activeCard) {
+          setActiveCard(activeCard);
+        } else {
+          applyPalette(list[0]);
+          setActiveCard(paletteGrid.querySelector(".card"));
+        }
+      }
+
+      function filterPalettes(searchText) {
+        const text = searchText.trim().toLowerCase();
+
+        if (!text) {
+          filteredPalettes = [...palettes];
+          renderCards(filteredPalettes);
+          return;
+        }
+
+        filteredPalettes = palettes.filter(function (palette) {
+          const haystack = [
+            palette.name,
+            palette.style,
+            palette.description,
+            palette.colors.bg,
+            palette.colors.surface,
+            palette.colors.text,
+            palette.colors.accent,
+            palette.colors.accentSoft,
+          ]
+            .join(" ")
+            .toLowerCase();
+
+          return haystack.indexOf(text) !== -1;
+        });
+
+        renderCards(filteredPalettes);
+      }
+
+      searchInput.addEventListener("input", function () {
+        filterPalettes(searchInput.value);
+      });
+
+      shuffleBtn.addEventListener("click", function () {
+        const source = filteredPalettes.length ? filteredPalettes : palettes;
+        const chosen = source[Math.floor(Math.random() * source.length)];
+        applyPalette(chosen);
+
+        const card = paletteGrid.querySelector('[data-id="' + chosen.id + '"]');
+        if (card) {
+          setActiveCard(card);
+          card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+
+      copyActiveBtn.addEventListener("click", function () {
+        copyText(getCssVariables(activePalette), function () {
+          const original = copyActiveBtn.textContent;
+          copyActiveBtn.textContent = "Copied Active Theme";
+          window.setTimeout(function () {
+            copyActiveBtn.textContent = original;
+          }, 1200);
+        });
+      });
+
+      applyPalette(activePalette);
+      renderCards(palettes);
+    </script>
+  </body>
+</html>
